@@ -15,7 +15,7 @@ public:
 private:
 	GLuint shaderProgram, VBO, VAO, EBO, texture, VBO2, VAO2, EBO2, texture2, VBO3, VAO3, EBO3, texture3, VBO4, VAO4, EBO4, texture4,
 		VBO5, VAO5, EBO5, texture5, VBO6, VAO6, EBO6, texture6, VBO7, VAO7, EBO7, texture7, VBOll, VAOll, EBOll, texturell,
-		VBOlr, VAOlr, EBOlr, texturelr, VBOPL, VAOPL, EBOPL, texturePL;
+		VBOlr, VAOlr, EBOlr, texturelr, VBOPL, VAOPL, EBOPL, texturePL, VBOPF, VAOPF, EBOPF, texturePF;
 	float viewCamX, viewCamY, viewCamZ, upCamX, upCamY, upCamZ, posCamX, posCamY, posCamZ, CAMERA_SPEED, fovy;
 	virtual void Init();
 	virtual void DeInit();
@@ -26,6 +26,7 @@ private:
 	void BuildColoredKasur();
 	void BuildColoredSandaran();
 	void BuildColoredPlane();
+	void BuildColoredPlafon();
 	void BuildColoredTembok();
 	void BuildColoredLemari();
 	void BuildColoredLemariKanan();
@@ -41,6 +42,7 @@ private:
 	void DrawColoredPintuLaci();
 	void DrawColoredPlane();
 	void DrawColoredKasur();
+	void DrawColoredPlafon();
 	void DrawColoredSandaran();
 	void MoveCamera(float speed);
 	void StrafeCamera(float speed);

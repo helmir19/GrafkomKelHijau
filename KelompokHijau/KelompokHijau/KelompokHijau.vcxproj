@@ -167,10 +167,12 @@
     <Image Include="kasur.png" />
     <Image Include="kasur1.jpg" />
     <Image Include="kayu.png" />
+    <Image Include="laci.png" />
     <Image Include="lantai2.jpg" />
     <Image Include="lemari.png" />
     <Image Include="lemari2.png" />
     <Image Include="pintulemari.png" />
+    <Image Include="plafon.png" />
     <Image Include="wallRed.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
