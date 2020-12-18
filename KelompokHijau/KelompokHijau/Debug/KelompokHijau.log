@@ -1,10 +1,10 @@
 ﻿  Demo.cpp
-C:\Users\gilbe\OneDrive\Documents\GitHub\GrafkomKelHijau\KelompokHijau\KelompokHijau\Demo.cpp(344,2): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\gilbe\OneDrive\Documents\GitHub\GrafkomKelHijau\KelompokHijau\KelompokHijau\Demo.cpp(465,2): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\gilbe\OneDrive\Documents\GitHub\GrafkomKelHijau\KelompokHijau\KelompokHijau\Demo.cpp(635,2): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\gilbe\OneDrive\Documents\GitHub\GrafkomKelHijau\KelompokHijau\KelompokHijau\Demo.cpp(752,2): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\gilbe\OneDrive\Documents\GitHub\GrafkomKelHijau\KelompokHijau\KelompokHijau\Demo.cpp(842,2): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\gilbe\OneDrive\Documents\GitHub\GrafkomKelHijau\KelompokHijau\KelompokHijau\Demo.cpp(945,2): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\gilbe\OneDrive\Documents\GitHub\GrafkomKelHijau\KelompokHijau\KelompokHijau\Demo.cpp(1073,2): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\gilbe\OneDrive\Documents\GitHub\GrafkomKelHijau\KelompokHijau\KelompokHijau\Demo.cpp(1201,2): warning C4305: 'initializing': truncation from 'double' to 'float'
-  KelompokHijau.vcxproj -> C:\Users\gilbe\OneDrive\Documents\GitHub\GrafkomKelHijau\KelompokHijau\Debug\KelompokHijau.exe
+D:\GitHub\GrafkomKelHijau\KelompokHijau\KelompokHijau\Demo.cpp(344,2): warning C4305: 'initializing': truncation from 'double' to 'float'
+D:\GitHub\GrafkomKelHijau\KelompokHijau\KelompokHijau\Demo.cpp(465,2): warning C4305: 'initializing': truncation from 'double' to 'float'
+D:\GitHub\GrafkomKelHijau\KelompokHijau\KelompokHijau\Demo.cpp(635,2): warning C4305: 'initializing': truncation from 'double' to 'float'
+D:\GitHub\GrafkomKelHijau\KelompokHijau\KelompokHijau\Demo.cpp(752,2): warning C4305: 'initializing': truncation from 'double' to 'float'
+D:\GitHub\GrafkomKelHijau\KelompokHijau\KelompokHijau\Demo.cpp(842,2): warning C4305: 'initializing': truncation from 'double' to 'float'
+D:\GitHub\GrafkomKelHijau\KelompokHijau\KelompokHijau\Demo.cpp(945,2): warning C4305: 'initializing': truncation from 'double' to 'float'
+D:\GitHub\GrafkomKelHijau\KelompokHijau\KelompokHijau\Demo.cpp(1073,2): warning C4305: 'initializing': truncation from 'double' to 'float'
+D:\GitHub\GrafkomKelHijau\KelompokHijau\KelompokHijau\Demo.cpp(1201,2): warning C4305: 'initializing': truncation from 'double' to 'float'
+  KelompokHijau.vcxproj -> D:\GitHub\GrafkomKelHijau\KelompokHijau\Debug\KelompokHijau.exe
