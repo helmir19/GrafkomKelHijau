@@ -33,6 +33,8 @@ void Demo::Init() {
 
 	BuildColoredLaci();
 
+	BuildColoredPintuLaci();
+
 	InitCamera();
 }
 
@@ -168,6 +170,8 @@ void Demo::Render() {
 	DrawColoredLemariKiri();
 
 	DrawColoredLaci();
+
+	DrawColoredPintuLaci();
 
 	glDisable(GL_DEPTH_TEST);
 }
@@ -1030,102 +1034,52 @@ void Demo::BuildColoredLaci() {
 	float vertices[] = {
 		//// format position, tex coords
 
-		// TEMPAT TIDUR
-		// TEMPAT KASUR
-		//-8.0,  0.4, 13.0,  0.0, 0.0, // front top left 0
-		//-1.0,   0.4, 13.0,  1.0, 0.0, // front top right 1
-		//-1.0,   0.4, 4.0,   1.0, 1.0, // back top right 2
-		//-8.0,  0.4, 4.0,   0.0, 1.0, // back top left 3 
+		//front
+		-0.5, -0.5, 13.0, 0, 0,  // 0
+		2.5, -0.5, 13.0, 1, 0,   // 1
+		2.5,  2.5, 13.0, 1, 1,   // 2
+		-0.5,  2.5, 13.0, 0, 1,  // 3
 
-		//-8.0, -0.5, 13.0,  0.0, 0.0, // front bottom left 4
-		//-1.0,  -0.5, 13.0,  1.0, 0.0, // front bottom right 5
-		//-1.0,  -0.5, 4.0,   1.0, 1.0, // back bottom right 6
-		//-8.0, -0.5, 4.0,   0.0, 1.0, // back bottom left 7 
-		//// Kasur
-		//-8.0,  1.5, 13.0,  0.0, 0.0, // front top left 8
-		// -1.0,  1.5, 13.0,  1.0, 0.0, // front top right 9
-		// -1.0,  1.5, 4.0,   1.0, 1.0, // back top right 10
-		//-8.0,  1.5, 4.0,   0.0, 1.0, // back top left 11 
+		// right
+		2.5,  2.5,  14.9, 0, 0,  // 4
+		2.5,  2.5, 13.0, 1, 0,  // 5
+		2.5, -0.5, 13.0, 1, 1,  // 6
+		2.5, -0.5,  14.9, 0, 1,  // 7
 
-		//-8.0, -0.1, 13.0,  0.0, 0.0, // front bottom left 12
-		// -1.0, -0.1, 13.0,  1.0, 0.0, // front bottom right 13
-		// -1.0, -0.1, 4.0,   1.0, 1.0, // back bottom right 14
-		//-8.0, -0.1, 4.0,   0.0, 1.0, // back bottom left 15
-		// Sandaran
-		 1.0, 4.0, 15.0,  0.0, 0.0, // front top left 16
-		 7.0,  4.0, 15.0,  1.0, 0.0, // front top right 17
-		 7.0,  4.0, 13.0,  1.0, 1.0, // back top right 18
-		 1.0, 4.0, 13.0,  0.0, 1.0, // back top left 19 
+		// back
+		-0.5, -0.5, 14.9, 0, 0, // 8 
+		2.5,  -0.5, 14.9, 1, 0, // 9
+		2.5,   2.5, 14.9, 1, 1, // 10
+		-0.5,  2.5, 14.9, 0, 1, // 11
 
-		 1.0, -0.5, 15.0,  0.0, 0.0, // front bottom left 21
-		 7.0,  -0.5, 15.0,  1.0, 0.0, // front bottom right 22
-		 7.0,  -0.5, 13.0,  1.0, 0.0, // back bottom right 23
-		 1.0, -0.5, 13.0,  0.0, 1.0, // back bottom left 24
+		// left
+		-0.5, -0.5, 13.0, 0, 0, // 12
+		-0.5, -0.5,  14.9, 1, 0, // 13
+		-0.5,  2.5,  14.9, 1, 1, // 14
+		-0.5,  2.5, 13.0, 0, 1, // 15
+
+		// upper
+		2.5, 2.5,  13.0, 0, 0,   // 16
+		-0.5, 2.5,  13.0, 1, 0,  // 17
+		-0.5, 2.5, 14.9, 1, 1,  // 18
+		2.5, 2.5, 14.9, 0, 1,   // 19
+
+		// bottom
+		-0.5, -0.5, 14.9, 0, 0, // 20
+		2.5, -0.5, 14.9, 1, 0,  // 21
+		2.5, -0.5,  13.0, 1, 1,  // 22
+		-0.5, -0.5,  13.0, 0, 1, // 23
 
 	};
 
 	unsigned int indices[] = {
-		//0,  1,  2,  0,  2,  3,   // front
-		//4,  5,  6,  4,  6,  7,   // right
-		//8,  9,  10, 8,  10, 11,  // back
-		//12, 14, 13, 12, 15, 14,  // left
-		//16, 18, 17, 16, 19, 18,  // upper
-		//20, 22, 21, 20, 23, 22   // bottom
+		0,  1,  2,  0,  2,  3,   // front
+		4,  5,  6,  4,  6,  7,   // right
+		8,  9,  10, 8,  10, 11,  // back
+		12, 14, 13, 12, 15, 14,  // left
+		16, 18, 17, 16, 19, 18,  // upper
+		20, 22, 21, 20, 23, 22   // bottom
 
-		//Badan
-		0, 1, 2,  // Top Face
-		0, 2, 3,  // --------
-
-		4, 5, 6,   // Bottom Face
-		4, 6, 7,   // -----------
-
-		4, 5, 1,   // Front Face
-		4, 1, 0,   // ----------
-
-		7, 6, 2,   // Back Face
-		7, 2, 3,   // ---------
-
-		5, 2, 6,   // Right Face
-		5, 1, 2,   // ----------
-
-		4, 7, 3,   // Left Face
-		4, 3, 0    // ----------
-		//Pintu Kiri
-		//8, 9, 10,  // Top Face
-		//8, 10, 11,  // --------
-
-		//12, 13, 14,   // Bottom Face
-		//12, 14, 15,   // -----------
-
-		//12, 13, 9,   // Front Face
-		//12, 9, 8,   // ----------
-
-		//15, 14, 10,   // Back Face
-		//15, 10, 11,   // ---------
-
-		//13, 10, 14,   // Right Face
-		//13, 9, 10,   // ----------
-
-		//12, 15, 11,   // Left Face
-		//12, 11, 8,    // ----------
-		////Pintu Kanan
-		//16, 17, 18,  // Top Face
-		//16, 18, 19,  // --------
-
-		//20, 21, 22,   // Bottom Face
-		//20, 22, 23,   // -----------
-
-		//20, 21, 17,   // Front Face
-		//20, 17, 16,   // ----------
-
-		//23, 22, 18,   // Back Face
-		//23, 18, 19,   // ---------
-
-		//21, 18, 22,   // Right Face
-		//21, 17, 18,   // ----------
-
-		//20, 23, 19,   // Left Face
-		//20, 19, 16    // ----------
 
 	};
 
@@ -1168,6 +1122,133 @@ void Demo::DrawColoredLaci() {
 	glUniform1i(glGetUniformLocation(this->shaderProgram, "ourTexture"), 0);
 
 	glBindVertexArray(VAO5); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+
+	glDrawElements(GL_TRIANGLES, 108, GL_UNSIGNED_INT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindVertexArray(0);
+}
+
+
+void Demo::BuildColoredPintuLaci() {
+	// load image into texture memory
+		// ------------------------------
+		// Load and create a texture 
+	glGenTextures(1, &texturePL);
+	glBindTexture(GL_TEXTURE_2D, texturePL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	int width, height;
+	unsigned char* image = SOIL_load_image("kayu.png", &width, &height, 0, SOIL_LOAD_RGBA);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+	SOIL_free_image_data(image);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	// set up vertex data (and buffer(s)) and configure vertex attributes
+	// ------------------------------------------------------------------
+	float vertices[] = {
+		//// format position, tex coords
+
+		//front
+		-0.3, -0.3, 12.9, 0, 0,  // 0
+		2.3, -0.3, 12.9, 1, 0,   // 1
+		2.3,  0.9, 12.9, 1, 1,   // 2
+		-0.3,  0.9, 12.9, 0, 1,  // 3
+
+
+		// back
+		-0.3, 1.1, 12.9, 0, 0, // 8 
+		2.3,  1.1, 12.9, 1, 0, // 9
+		2.3,   2.3, 12.9, 1, 1, // 10
+		-0.3,  2.3, 12.9, 0, 1, // 11
+
+		////front
+		//-0.5, -0.5, 12.0, 0, 0,  // 0
+		//2.5, -0.5, 12.0, 1, 0,   // 1
+		//2.5,  2.5, 12.0, 1, 1,   // 2
+		//-0.5,  2.5, 12.0, 0, 1,  // 3
+
+		//// right
+		//2.5,  2.5,  14.9, 0, 0,  // 4
+		//2.5,  2.5, 13.0, 1, 0,  // 5
+		//2.5, -0.5, 13.0, 1, 1,  // 6
+		//2.5, -0.5,  14.9, 0, 1,  // 7
+
+		//// back
+		//-0.5, -0.5, 14.9, 0, 0, // 8 
+		//2.5,  -0.5, 14.9, 1, 0, // 9
+		//2.5,   2.5, 14.9, 1, 1, // 10
+		//-0.5,  2.5, 14.9, 0, 1, // 11
+
+		//// left
+		//-0.5, -0.5, 13.0, 0, 0, // 12
+		//-0.5, -0.5,  14.9, 1, 0, // 13
+		//-0.5,  2.5,  14.9, 1, 1, // 14
+		//-0.5,  2.5, 13.0, 0, 1, // 15
+
+		//// upper
+		//2.5, 2.5,  13.0, 0, 0,   // 16
+		//-0.5, 2.5,  13.0, 1, 0,  // 17
+		//-0.5, 2.5, 14.9, 1, 1,  // 18
+		//2.5, 2.5, 14.9, 0, 1,   // 19
+
+		//// bottom
+		//-0.5, -0.5, 14.9, 0, 0, // 20
+		//2.5, -0.5, 14.9, 1, 0,  // 21
+		//2.5, -0.5,  13.0, 1, 1,  // 22
+		//-0.5, -0.5,  13.0, 0, 1, // 23
+
+	};
+
+	unsigned int indices[] = {
+		0,  1,  2,  0,  2,  3,   // front
+		4,  5,  6,  4,  6,  7,   // right
+		8,  9,  10, 8,  10, 11,  // back
+		12, 14, 13, 12, 15, 14,  // left
+		16, 18, 17, 16, 19, 18,  // upper
+		20, 22, 21, 20, 23, 22   // bottom
+
+
+	};
+
+	glGenVertexArrays(1, &VAOPL);
+	glGenBuffers(1, &VBOPL);
+	glGenBuffers(1, &EBOPL);
+	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+	glBindVertexArray(VAOPL);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBOPL);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOPL);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	// define position pointer layout 0
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(0);
+
+	// define texcoord pointer layout 1
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
+
+	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
+	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
+	glBindVertexArray(0);
+
+	// remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+void Demo::DrawColoredPintuLaci() {
+	glUseProgram(shaderProgram);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texturePL);
+	glUniform1i(glGetUniformLocation(this->shaderProgram, "ourTexture"), 0);
+
+	glBindVertexArray(VAOPL); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 
 	glDrawElements(GL_TRIANGLES, 108, GL_UNSIGNED_INT, 0);
 
