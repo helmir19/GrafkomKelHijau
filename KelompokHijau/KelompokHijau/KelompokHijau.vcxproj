@@ -164,6 +164,7 @@
     <ClInclude Include="RenderEngine.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="glaci.png" />
     <Image Include="glantai2.png" />
     <Image Include="gplafon.png" />
     <Image Include="grayscaleLemari2.png" />

@@ -133,7 +133,7 @@ void Demo::Render() {
 	glViewport(0, 0, this->screenWidth, this->screenHeight);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -344,7 +344,7 @@ void Demo::BuildColoredTembok() {
 	glBindTexture(GL_TEXTURE_2D, texture3);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	image = SOIL_load_image("walRed.png", &width, &height, 0, SOIL_LOAD_RGBA);
+	image = SOIL_load_image("wallRed.png", &width, &height, 0, SOIL_LOAD_RGBA);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -870,40 +870,40 @@ void Demo::BuildColoredLemari() {
 		//// format position, tex coords
 
 		// front
-		-14.99f, -0.499f,	14.99f,		0.0f, 0.0f,	0.0f,  0.0f,  1.0f, 			// 0
-		-12.01f, -0.499f,	14.99f,		1.0f, 0.0f,	0.0f,  0.0f,  1.0f, 			 // 1
-		-12.01f,  8.0f,		14.99f,		1.0f, 1.0f,	0.0f,  0.0f,  1.0f, 			 // 2
-		-14.99f,  8.0f,		14.99f,		0.0f, 1.0f,	0.0f,  0.0f,  1.0f, 			// 3
+		-14.99f, -0.499f,	14.99f,		0.0f, 0.0f,	0.0f,  1.0f,  0.0f, 			// 0
+		-12.01f, -0.499f,	14.99f,		1.0f, 0.0f,	0.0f,  1.0f,  0.0f, 			 // 1
+		-12.01f,  8.0f,		14.99f,		1.0f, 1.0f,	0.0f,  1.0f,  0.0f, 			 // 2
+		-14.99f,  8.0f,		14.99f,		0.0f, 1.0f,	0.0f,  1.0f,  0.0f, 			// 3
 
 		// right
-		-12.01f, 8.0f,		14.99f,		0.0f, 0.0f,	 1.0f,  0.0f,  0.0f,				// 4
-		-12.01f, 8.0f,		4.0f,		1.0f, 0.0f,	 1.0f,  0.0f,  0.0f,				 // 5
-		-12.01f, -0.499f,	4.0f,		1.0f, 1.0f,	 1.0f,  0.0f,  0.0f,				 // 6
-		-12.01f, -0.499f,   14.99f,		0.0f, 1.0f,	 1.0f,  0.0f,  0.0f,				// 7
+		-12.01f, 8.0f,		14.99f,		0.0f, 0.0f,	 0.0f,  1.0f,  0.0f,				// 4
+		-12.01f, 8.0f,		4.0f,		1.0f, 0.0f,	 0.0f,  1.0f,  0.0f,				 // 5
+		-12.01f, -0.499f,	4.0f,		1.0f, 1.0f,	 0.0f,  1.0f,  0.0f,				 // 6
+		-12.01f, -0.499f,   14.99f,		0.0f, 1.0f,	 0.0f,  1.0f,  0.0f,				// 7
 
 		// back
-		-14.99f,  8.0f,	   4.0f,	0.0f, 0.0f,		0.0f,  0.0f,  -1.0f,				 // 8
-		-12.01f,  8.0f,	   4.0f,	1.0f, 0.0f,		0.0f,  0.0f,  -1.0f,				  // 9
-		-12.01f, -0.499f,  4.0f,	1.0f, 1.0f,		0.0f,  0.0f,  -1.0f,				  // 10
-		-14.99f, -0.499f,  4.0f,	0.0f, 1.0f,		0.0f,  0.0f,  -1.0f,				 // 11
+		-14.99f,  8.0f,	   4.0f,	0.0f, 0.0f,		0.0f,  1.0f,  0.0f,				 // 8
+		-12.01f,  8.0f,	   4.0f,	1.0f, 0.0f,		0.0f,  1.0f,  0.0f,				  // 9
+		-12.01f, -0.499f,  4.0f,	1.0f, 1.0f,		0.0f,  1.0f,  0.0f,				  // 10
+		-14.99f, -0.499f,  4.0f,	0.0f, 1.0f,		0.0f,  1.0f,  0.0f,				 // 11
 
 		// left
-		-14.99f, 8.0f,		14.99f,	0.0f, 0.0f,		-1.0f,  0.0f,  0.0f,				// 12
-		-14.99f, 8.0f,		4.0f,	1.0f, 0.0f,		-1.0f,  0.0f,  0.0f,				 // 13
-		-14.99f, -0.499f,	4.0f,	1.0f, 1.0f,		-1.0f,  0.0f,  0.0f,				 // 14
-		-14.99f, -0.499f,	14.99f,	0.0f, 1.0f,		-1.0f,  0.0f,  0.0f,				// 15
+		-14.99f, 8.0f,		14.99f,	0.0f, 0.0f,		0.0f,  1.0f,  0.0f,				// 12
+		-14.99f, 8.0f,		4.0f,	1.0f, 0.0f,		0.0f,  1.0f,  0.0f,				 // 13
+		-14.99f, -0.499f,	4.0f,	1.0f, 1.0f,		0.0f,  1.0f,  0.0f,				 // 14
+		-14.99f, -0.499f,	14.99f,	0.0f, 1.0f,		0.0f,  1.0f,  0.0f,				// 15
 
 		// upper
-		-12.0f,	8.0f,		14.99f,	0.0f, 0.0f,		0.0f,  1.0f,  0.0f, 				  // 16
-		-14.99f, 8.0f,		14.99f,	1.0f, 0.0f,		0.0f,  1.0f,  0.0f, 				 // 17
-		-14.99f, 8.0f,		4.0f,	1.0f, 1.0f,		0.0f,  1.0f,  0.0f, 				 // 18
-		-12.0f,	8.0f,		4.0f,	0.0f, 1.0f,		0.0f,  1.0f,  0.0f, 				  // 19
+		-12.0f,	8.0f,		14.99f,	0.0f, 0.0f,		0.0f, 1.0f,  0.0f, 				  // 16
+		-14.99f, 8.0f,		14.99f,	1.0f, 0.0f,		0.0f, 1.0f,  0.0f, 				 // 17
+		-14.99f, 8.0f,		4.0f,	1.0f, 1.0f,		0.0f, 1.0f,  0.0f, 				 // 18
+		-12.0f,	8.0f,		4.0f,	0.0f, 1.0f,		0.0f, 1.0f,  0.0f, 				  // 19
 
 		// bottom
-		-14.99f, -0.499f,  4.0f,	0.0f, 0.0f,		0.0f,  -1.0f,  0.0f,					// 20
-		-12.0f, -0.499f,  4.0f,	1.0f, 0.0f,			0.0f,  -1.0f,  0.0f,					// 21
-		-12.0f, -0.499f,  14.99f,	1.0f, 1.0f,		0.0f,  -1.0f,  0.0f,					 // 22
-		-14.99f, -0.499f,  14.99f, 0.0f, 1.0f,		0.0f,  -1.0f,  0.0f,					// 23
+		-14.99f, -0.499f,  4.0f,	0.0f, 0.0f,		0.0f,  1.0f,  0.0f,					// 20
+		-12.0f, -0.499f,  4.0f,	1.0f, 0.0f,			0.0f,  1.0f,  0.0f,					// 21
+		-12.0f, -0.499f,  14.99f,	1.0f, 1.0f,		0.0f,  1.0f,  0.0f,					 // 22
+		-14.99f, -0.499f,  14.99f, 0.0f, 1.0f,		0.0f,  1.0f,  0.0f,					// 23
 	};
 
 	unsigned int indices[] = {
@@ -963,8 +963,8 @@ void Demo::DrawColoredLemari() {
 	glBindTexture(GL_TEXTURE_2D, stexture);
 	glUniform1i(glGetUniformLocation(this->shaderProgram, "material.specular"), 1);
 
-	GLint shininessMatLoc = glGetUniformLocation(this->shaderProgram, "material.shininess");
-	glUniform1f(shininessMatLoc, 10.0f);
+	/*GLint shininessMatLoc = glGetUniformLocation(this->shaderProgram, "material.shininess");
+	glUniform1f(shininessMatLoc, 10.0f);*/
 
 	glBindVertexArray(VAO4); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 
@@ -994,6 +994,7 @@ void Demo::BuildColoredLemariKiri() {
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
 	float vertices[] = {
@@ -1001,16 +1002,16 @@ void Demo::BuildColoredLemariKiri() {
 
 		// LEMARI
 
-		-12.0f,  7.8f, 14.94f,		0.0f, 0.0f,   // front top left 0
-		-11.75f, 7.8f, 14.94f,		1.0f, 0.0f,   // front top right 1
-		-11.75f, 7.8f, 9.69f,		1.0f, 1.0f,   // back top right 2
-		-12.0f,  7.8f, 9.69f,		0.0f, 1.0f,       // back top left 3 
+		-12.0f,  7.8f, 14.94f,		0.0f, 0.0f,   0.0f, -1.0f, 0.0f,                     // front top left 0
+		-11.75f, 7.8f, 14.94f,		1.0f, 0.0f,   0.0f, -1.0f, 0.0f,                     // front top right 1
+		-11.75f, 7.8f, 9.69f,		1.0f, 1.0f,   0.0f, -1.0f, 0.0f,                     // back top right 2
+		-12.0f,  7.8f, 9.69f,		0.0f, 1.0f,   0.0f, -1.0f, 0.0f,                         // back top left 3 
 
-		-12.0f, -0.3f, 14.94f,		0.0f, 0.0f, // front bottom left 4
-		-11.75f, -0.3f, 14.94f,		1.0f, 0.0f, // front bottom right 5
-		-11.75f, -0.3f, 9.69f,		1.0f, 1.0f, // back bottom right 6
-		-12.0f, -0.3f, 9.69f,		0.0f, 1.0f,// back bottom left 7 
-
+		-12.0f, -0.3f, 14.94f,		0.0f, 0.0f,    0.0f,  -1.0f,  0.0f,					// front bottom left 4
+		-11.75f, -0.3f, 14.94f,		1.0f, 0.0f,    0.0f,  -1.0f,  0.0f,                  // front bottom right 5
+		-11.75f, -0.3f, 9.69f,		1.0f, 1.0f,    0.0f,  -1.0f,  0.0f,                  // back bottom right 6
+		-12.0f, -0.3f, 9.69f,		0.0f, 1.0f,    0.0f,  -1.0f,  0.0f,                  // back bottom left 7 
+												
 	};
 
 	unsigned int indices[] = {
@@ -1049,12 +1050,16 @@ void Demo::BuildColoredLemariKiri() {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// define position pointer layout 0
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(0);
 
 	// define texcoord pointer layout 1
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
+
+	// define texcoord pointer layout 2
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(2);
 
 	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -1104,15 +1109,15 @@ void Demo::BuildColoredLemariKanan() {
 
 		// LEMARI
 
-		-12.0f,  7.8f, 9.29f,	0.0f, 0.0f,  // front top left 0
-		-11.75f, 7.8f, 9.29f,	1.0f, 0.0f,   // front top right 1
-		-11.75f, 7.8f, 4.04f,	1.0f, 1.0f,   // back top right 2
-		-12.0f,  7.8f, 4.04f,	0.0f, 1.0f, // back top left 3 
+		-12.0f,  7.8f, 9.29f,	0.0f, 0.0f,   0.0f, -1.0f, 0.0f,               // front top left 0
+		-11.75f, 7.8f, 9.29f,	1.0f, 0.0f,   0.0f, -1.0f, 0.0f,                // front top right 1
+		-11.75f, 7.8f, 4.04f,	1.0f, 1.0f,   0.0f, -1.0f, 0.0f,                // back top right 2
+		-12.0f,  7.8f, 4.04f,	0.0f, 1.0f,   0.0f, -1.0f, 0.0f,              // back top left 3 
 
-		-12.0f, -0.3f, 9.29f,	0.0f, 0.0f, // front bottom left 4
-		-11.75f, -0.3f, 9.29f,  1.0f, 0.0f, // front bottom right 5
-		-11.75f, -0.3f, 4.04f,	1.0f, 1.0f, // back bottom right 6
-		-12.0f, -0.3f, 4.04f,	0.0f, 1.0f, // back bottom left 7 
+		-12.0f, -0.3f, 9.29f,	0.0f, 0.0f,    0.0f,  -1.0f,  0.0f,          // front bottom left 4
+		-11.75f, -0.3f, 9.29f,  1.0f, 0.0f,    0.0f,  -1.0f,  0.0f,           // front bottom right 5
+		-11.75f, -0.3f, 4.04f,	1.0f, 1.0f,    0.0f,  -1.0f,  0.0f,           // back bottom right 6
+		-12.0f, -0.3f, 4.04f,	0.0f, 1.0f,    0.0f,  -1.0f,  0.0f,           // back bottom left 7 
 
 	};
 
@@ -1151,12 +1156,16 @@ void Demo::BuildColoredLemariKanan() {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// define position pointer layout 0
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(0);
 
 	// define texcoord pointer layout 1
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
+
+	// define texcoord pointer layout 2
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(2);
 
 	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -1399,7 +1408,7 @@ void Demo::BuildColoredPlane()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	int width, height;
-	unsigned char* image = SOIL_load_image("lantai2.jpg", &width, &height, 0, SOIL_LOAD_RGBA);
+	unsigned char* image = SOIL_load_image("glantai2.jpg", &width, &height, 0, SOIL_LOAD_RGBA);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	SOIL_free_image_data(image);
