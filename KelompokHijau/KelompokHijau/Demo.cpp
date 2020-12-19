@@ -1208,45 +1208,54 @@ void Demo::BuildColoredLaci() {
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	glGenTextures(1, &texture5);
+	glBindTexture(GL_TEXTURE_2D, texture5);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	image = SOIL_load_image("lemari2.png", &width, &height, 0, SOIL_LOAD_RGBA);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+	SOIL_free_image_data(image);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
 	float vertices[] = {
 
 		//front
-		-0.5f,	-0.499f, 13.0f,		0.0f, 0.0f,  // 0
-		2.5f,	-0.499f, 13.0f,		1.0f, 0.0f,   // 1
-		2.5f,	2.5f,	 13.0f,		1.0f, 1.0f,   // 2
-		-0.5f,  2.5f,	 13.0f,		0.0f, 1.0f,  // 3
+		-0.5f,	-0.499f, 13.0f,		0.0f, 0.0f,	0.0f,  1.0f,  0.0f,	 // 0
+		2.5f,	-0.499f, 13.0f,		1.0f, 0.0f,	0.0f,  1.0f,  0.0f,	// 1
+		2.5f,	2.5f,	 13.0f,		1.0f, 1.0f,	0.0f,  1.0f,  0.0f,	 // 2
+		-0.5f,  2.5f,	 13.0f,		0.0f, 1.0f,	0.0f,  1.0f,  0.0f,	// 3
 
 		// right
-		2.5f,  2.5f,	14.99f,		0.0f, 0.0f,  // 4
-		2.5f,  2.5f,	13.0f,		1.0f, 0.0f,  // 5
-		2.5f, -0.499f,	13.0f,		1.0f, 1.0f,  // 6
-		2.5f, -0.499f,  14.99f,		0.0f, 1.0f,  // 7
+		2.5f,  2.5f,	14.99f,		0.0f, 0.0f,	0.0f,  1.0f,  0.0f,		 // 4
+		2.5f,  2.5f,	13.0f,		1.0f, 0.0f,	0.0f,  1.0f,  0.0f,		 // 5
+		2.5f, -0.499f,	13.0f,		1.0f, 1.0f,	0.0f,  1.0f,  0.0f,		 // 6
+		2.5f, -0.499f,  14.99f,		0.0f, 1.0f,	0.0f,  1.0f,  0.0f,		 // 7
 
 		// back
-		-0.5f, -0.499f, 14.9f,		0.0f, 0.0f, // 8 
-		2.5f,  -0.499f, 14.9f,		1.0f, 0.0f, // 9
-		2.5f,   2.5f,	14.9f,		1.0f, 1.0f, // 10
-		-0.5f,  2.5f,	14.9f,		0.0f, 1.0f, // 11
+		-0.5f, -0.499f, 14.9f,		0.0f, 0.0f,	0.0f,  1.0f,  0.0f, 		// 8 
+		2.5f,  -0.499f, 14.9f,		1.0f, 0.0f,	0.0f,  1.0f,  0.0f, 		// 9
+		2.5f,   2.5f,	14.9f,		1.0f, 1.0f,	0.0f,  1.0f,  0.0f, 		// 10
+		-0.5f,  2.5f,	14.9f,		0.0f, 1.0f,	0.0f,  1.0f,  0.0f, 		// 11
 
 		// left
-		-0.5f, -0.499f, 13.0f,		0.0f, 0.0f, // 12
-		-0.5f, -0.499f,	14.99f,		1.0f, 0.0f, // 13
-		-0.5f,  2.5f,	14.99f,		1.0f, 1.0f, // 14
-		-0.5f,  2.5f,	13.0f,		0.0f, 1.0f, // 15
+		-0.5f, -0.499f, 13.0f,		0.0f, 0.0f,	0.0f,  1.0f,  0.0f,		// 12
+		-0.5f, -0.499f,	14.99f,		1.0f, 0.0f,	0.0f,  1.0f,  0.0f,		// 13
+		-0.5f,  2.5f,	14.99f,		1.0f, 1.0f,	0.0f,  1.0f,  0.0f,		// 14
+		-0.5f,  2.5f,	13.0f,		0.0f, 1.0f,	0.0f,  1.0f,  0.0f,		// 15
 
 		// upper
-		2.5f,  2.5f,	13.0f,		0.0f, 0.0f,   // 16
-		-0.5f, 2.5f,	13.0f,		1.0f, 0.0f,  // 17
-		-0.5f, 2.5f,	14.99f,		1.0f, 1.0f,  // 18
-		2.5f,  2.5f,	14.99f,		0.0f, 1.0f,   // 19
+		2.5f,  2.5f,	13.0f,		0.0f, 0.0f,	0.0f,  1.0f,  0.0f,		  // 16
+		-0.5f, 2.5f,	13.0f,		1.0f, 0.0f,	0.0f,  1.0f,  0.0f,		 // 17
+		-0.5f, 2.5f,	14.99f,		1.0f, 1.0f,	0.0f,  1.0f,  0.0f,		 // 18
+		2.5f,  2.5f,	14.99f,		0.0f, 1.0f,	0.0f,  1.0f,  0.0f,		  // 19
 
 		// bottom
-		-0.5, -0.499f,	14.99f,		0.0f, 0.0f, // 20
-		2.5,  -0.499f,	14.99f,		1.0f, 0.0f,  // 21
-		2.5,  -0.499f,	13.0f,		1.0f, 1.0f,  // 22
-		-0.5, -0.499f,  13.0f,		0.0f, 1.0f, // 23
+		- 0.5, -0.499f,	14.99f,		0.0f, 0.0f,	0.0f,  1.0f,  0.0f,		// 20
+		2.5,  -0.499f,	14.99f,		1.0f, 0.0f,	0.0f,  1.0f,  0.0f,		 // 21
+		2.5,  -0.499f,	13.0f,		1.0f, 1.0f,	0.0f,  1.0f,  0.0f,		 // 22
+		-0.5, -0.499f,  13.0f,		0.0f, 1.0f,	0.0f,  1.0f,  0.0f,		// 23
 
 	};
 
@@ -1273,12 +1282,16 @@ void Demo::BuildColoredLaci() {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// define position pointer layout 0
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(0);
 
 	// define texcoord pointer layout 1
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
+
+	// define texcoord pointer layout 2
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(2);
 
 	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -1294,13 +1307,25 @@ void Demo::BuildColoredLaci() {
 void Demo::DrawColoredLaci() {
 	glUseProgram(shaderProgram);
 
-	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture5);
-	glUniform1i(glGetUniformLocation(this->shaderProgram, "ourTexture"), 0);
+	glUniform1i(glGetUniformLocation(this->shaderProgram, "material.diffuse"), 0);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texture5);
+	glUniform1i(glGetUniformLocation(this->shaderProgram, "material.specular"), 1);
+
+	GLint shininessMatLoc = glGetUniformLocation(this->shaderProgram, "material.shininess");
+	glUniform1f(shininessMatLoc, 4.0f);
 
 	glBindVertexArray(VAO5); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 
 	glDrawElements(GL_TRIANGLES, 108, GL_UNSIGNED_INT, 0);
+	
+	glm::mat4 model;
+	model = glm::translate(model, glm::vec3(0, 0, 0));
+
+	GLint modelLoc = glGetUniformLocation(this->shaderProgram, "model");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
@@ -1320,23 +1345,32 @@ void Demo::BuildColoredPintuLaci() {
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	glGenTextures(1, &texturePL);
+	glBindTexture(GL_TEXTURE_2D, texturePL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	image = SOIL_load_image("laci.png", &width, &height, 0, SOIL_LOAD_RGBA);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+	SOIL_free_image_data(image);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
 	float vertices[] = {
 		//// format position, tex coords
 
 		//front
-		-0.3f,	-0.3f,	12.99f,	0.0f, 0.0f,  // 0
-		2.3f,	-0.3f,	12.99f,	1.0f, 0.0f,   // 1
-		2.3f,	0.9f,	12.99f,	1.0f, 1.0f,   // 2
-		-0.3f,	0.9f,	12.99f,	0.0f, 1.0f,  // 3
+		-0.3f,	-0.3f,	12.99f,	0.0f, 0.0f,	0.0f,  1.0f,  0.0f,	 // 0
+		2.3f,	-0.3f,	12.99f,	1.0f, 0.0f,	0.0f,  1.0f,  0.0f,	  // 1
+		2.3f,	0.9f,	12.99f,	1.0f, 1.0f,	0.0f,  1.0f,  0.0f,	 // 2
+		-0.3f,	0.9f,	12.99f,	0.0f, 1.0f,	0.0f,  1.0f,  0.0f,	 // 3
 
 
 		// back
-		-0.3f,	1.1f, 12.99f,	0.0f, 0.0f, // 8 
-		2.3f,	1.1f, 12.99f,	1.0f, 0.0f, // 9
-		2.3f,   2.3f, 12.99f,	1.0f, 1.0f, // 10
-		-0.3f,  2.3f, 12.99f,	0.0f, 1.0f, // 11
+		-0.3f,	1.1f, 12.99f,	0.0f, 0.0f,	0.0f,  1.0f,  0.0f,	// 8 
+		2.3f,	1.1f, 12.99f,	1.0f, 0.0f,	0.0f,  1.0f,  0.0f,	// 9
+		2.3f,   2.3f, 12.99f,	1.0f, 1.0f,	0.0f,  1.0f,  0.0f,	// 10
+		-0.3f,  2.3f, 12.99f,	0.0f, 1.0f,	0.0f,  1.0f,  0.0f,	// 11
 
 	};
 
@@ -1364,12 +1398,16 @@ void Demo::BuildColoredPintuLaci() {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// define position pointer layout 0
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(0);
 
 	// define texcoord pointer layout 1
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
+
+	// define texcoord pointer layout 2
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(2);
 
 	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -1385,13 +1423,25 @@ void Demo::BuildColoredPintuLaci() {
 void Demo::DrawColoredPintuLaci() {
 	glUseProgram(shaderProgram);
 
-	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texturePL);
-	glUniform1i(glGetUniformLocation(this->shaderProgram, "ourTexture"), 0);
+	glUniform1i(glGetUniformLocation(this->shaderProgram, "material.diffuse"), 0);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texturePL);
+	glUniform1i(glGetUniformLocation(this->shaderProgram, "material.specular"), 1);
+
+	GLint shininessMatLoc = glGetUniformLocation(this->shaderProgram, "material.shininess");
+	glUniform1f(shininessMatLoc, 1.0f);
 
 	glBindVertexArray(VAOPL); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 
 	glDrawElements(GL_TRIANGLES, 108, GL_UNSIGNED_INT, 0);
+
+	glm::mat4 model;
+	model = glm::translate(model, glm::vec3(0, 0, 0));
+
+	GLint modelLoc = glGetUniformLocation(this->shaderProgram, "model");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
