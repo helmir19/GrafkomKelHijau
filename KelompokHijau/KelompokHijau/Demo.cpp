@@ -203,11 +203,11 @@ void Demo::DrawColoredPlafon()
 
 	glBindVertexArray(VAOPF); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 
-	glDrawElements(GL_TRIANGLES, 30, GL_UNSIGNED_INT, 0);
-
 	glm::mat4 model;
 	GLint modelLoc = glGetUniformLocation(this->shaderProgram, "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+	glDrawElements(GL_TRIANGLES, 30, GL_UNSIGNED_INT, 0);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
@@ -231,7 +231,7 @@ void Demo::BuildColoredPlafon() {
 	glBindTexture(GL_TEXTURE_2D, stexturePF);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	image = SOIL_load_image("gplafon.png", &width, &height, 0, SOIL_LOAD_RGBA);
+	image = SOIL_load_image("plafon.png", &width, &height, 0, SOIL_LOAD_RGBA);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -241,11 +241,15 @@ void Demo::BuildColoredPlafon() {
 	float vertices[] = {
 
 		// upper
-		15.0f, 25.0f,  15.0f,	0.0f, 0.0f,  0.0f,  0.0f,  0.0f,  // 16
-		-15.0f, 25.0f,  15.0f, 1.0f, 0.0f,   0.0f,  0.0f,  0.0f,// 17
-		-15.0f, 25.0f, -15.0f, 1.0f, 1.0f,   0.0f,  0.0f,  0.0f,// 18
-		15.0f, 25.0f, -15.0f,	0.0f, 1.0f,  0.0f,  0.0f,  0.0f,  // 19
+		15.0f, 25.0f,  15.0f,	0.0f, 0.0f,  0.0f,  1.0f,  0.0f,  // 16
+		-15.0f, 25.0f,  15.0f, 1.0f, 0.0f,   0.0f,  1.0f,  0.0f,// 17
+		-15.0f, 25.0f, -15.0f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f,// 18
+		15.0f, 25.0f, -15.0f,	0.0f, 1.0f,  0.0f,  1.0f,  0.0f,  // 19
 
+		//15.0f, 25.0f,  15.0f,	0.0f, 0.0f,
+		//-15.0f, 25.0f,  15.0f, 1.0f, 0.0f,
+		//-15.0f, 25.0f, -15.0f, 1.0f, 1.0f,
+		//15.0f, 25.0f, -15.0f,	0.0f, 1.0f,
 	};
 
 	unsigned int indices[] = {
@@ -276,7 +280,7 @@ void Demo::BuildColoredPlafon() {
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
 
-	// define texcoord pointer layout 1
+	 //define texcoord pointer layout 1
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
@@ -300,9 +304,21 @@ void Demo::DrawColoredTembok()
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture3);
-	glUniform1i(glGetUniformLocation(this->shaderProgram, "ourTexture"), 0);
+	glUniform1i(glGetUniformLocation(this->shaderProgram, "material.diffuse"), 0);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texture3);
+	glUniform1i(glGetUniformLocation(this->shaderProgram, "material.specular"), 1);
+
+	GLint shininessMatLoc = glGetUniformLocation(this->shaderProgram, "material.shininess");
+	glUniform1f(shininessMatLoc, 1.0f);
+
 
 	glBindVertexArray(VAO3); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+
+	glm::mat4 model;
+	GLint modelLoc = glGetUniformLocation(this->shaderProgram, "model");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
 	glDrawElements(GL_TRIANGLES, 30, GL_UNSIGNED_INT, 0);
 
@@ -324,32 +340,43 @@ void Demo::BuildColoredTembok() {
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	glGenTextures(1, &texture3);
+	glBindTexture(GL_TEXTURE_2D, texture3);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	image = SOIL_load_image("walRed.png", &width, &height, 0, SOIL_LOAD_RGBA);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+	SOIL_free_image_data(image);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
 	float vertices[] = {
-		//back
-		-15.0f, -0.5f, -15.0f,		0.0f, 0.0f, // 8 
-		 15.0f, -0.5f, -15.0f,		1.0f, 0.0f, // 9
-		 15.0f,  25.0f, -15.0f,	1.0f, 1.0f, // 10
-		-15.0f,  25.0f, -15.0f,	0.0f, 1.0f, // 11
+
+		-15.0f, -0.5f, -15.0f,		0.0f, 0.0f,0.0f, 1.0f,  0.0f,
+		 15.0f, -0.5f, -15.0f,		1.0f, 0.0f,0.0f, 1.0f,  0.0f,
+		 15.0f,  25.0f, -15.0f,	1.0f, 1.0f,	   0.0f, 1.0f,  0.0f,
+		-15.0f,  25.0f, -15.0f,	0.0f, 1.0f,	   0.0f, 1.0f,  0.0f,
 
 		// front
-		-15.0f, -0.5f, 15.0f,		0.0f, 0.0f,  // 0
-		15.0f, -0.5f, 15.0f,		1.0f, 0.0f,   // 1
-		15.0f,  25.0f, 15.0f,		1.0f, 1.0f,   // 2
-		-15.0f,  25.0f, 15.0f,		0.0f, 1.0f,  // 3
+		-15.0f, -0.5f, 15.0f,		0.0f, 0.0f,0.0f, 1.0f,  0.0f,
+		15.0f, -0.5f, 15.0f,		1.0f, 0.0f,0.0f, 1.0f,  0.0f,
+		15.0f,  25.0f, 15.0f,		1.0f, 1.0f,0.0f, 1.0f,  0.0f,
+		-15.0f,  25.0f, 15.0f,		0.0f, 1.0f,0.0f, 1.0f,  0.0f,
 
 		// right
-		15.0f,  25.0f,  15.0f,		0.0f, 0.0f,  // 4
-		15.0f,  25.0f, -15.0f,		1.0f, 0.0f,  // 5
-		15.0f, -0.5f, -15.0f,		1.0f, 1.0f,  // 6
-		15.0f, -0.5f,  15.0f,		0.0f, 1.0f,  // 7
+		15.0f,  25.0f,  15.0f,		0.0f, 0.0f,0.0f, 1.0f,  0.0f,
+		15.0f,  25.0f, -15.0f,		1.0f, 0.0f,0.0f, 1.0f,  0.0f,
+		15.0f, -0.5f, -15.0f,		1.0f, 1.0f,0.0f, 1.0f,  0.0f,
+		15.0f, -0.5f,  15.0f,		0.0f, 1.0f,0.0f, 1.0f,  0.0f,
 
 		// left
-		-15.0f, -0.5f, -15.0f,		0.0f, 0.0f, // 12
-		-15.0f, -0.5f,  15.0f,		1.0f, 0.0f, // 13
-		-15.0f,  25.0f,  15.0f,	1.0f, 1.0f, // 14
-		-15.0f,  25.0f, -15.0f,	0.0f, 1.0f, // 15
+		-15.0f, -0.5f, -15.0f,		0.0f, 0.0f,0.0f, 1.0f,  0.0f,
+		-15.0f, -0.5f,  15.0f,		1.0f, 0.0f,0.0f, 1.0f,  0.0f,
+		-15.0f,  25.0f,  15.0f,	1.0f, 1.0f,	   0.0f, 1.0f,  0.0f,
+		-15.0f,  25.0f, -15.0f,	0.0f, 1.0f,	   0.0f, 1.0f,  0.0f,
+
+
 
 	};
 
@@ -374,12 +401,15 @@ void Demo::BuildColoredTembok() {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// define position pointer layout 0
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(0);
 
 	// define texcoord pointer layout 1
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(2);
 
 	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -407,44 +437,52 @@ void Demo::BuildColoredTempatTidur() {
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	image = SOIL_load_image("kayu.png", &width, &height, 0, SOIL_LOAD_RGBA);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+	SOIL_free_image_data(image);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 	float vertices[] = {
 
-
 		// front
-		-8.0f, -0.499f, 13.0f,	0.0f, 0.0f,	 // 0
-		-1.0f, -0.499f, 13.0f,	1.0f, 0.0f,	  // 1
-		-1.0f,  0.5f, 13.0f,	1.0f, 1.0f,	 // 2
-		-8.0f, 0.5f, 13.0f,		0.0f, 1.0f,	 // 3
+		 -8.0f, -0.499f, 13.0f, 0.0f, 0.0f,	 0.0f,  1.0f,  0.0f, 	 // 0
+		 -1.0f, -0.499f, 13.0f, 1.0f, 0.0f,	0.0f,  1.0f,  0.0f, 	 // 1
+		 -1.0f,  0.5f, 13.0f, 1.0f, 1.0f,	0.0f,  1.0f,  0.0f, 	// 2
+		 -8.0f, 0.5f, 13.0f,  0.0f, 1.0f,	0.0f,  1.0f,  0.0f, 	// 3
+		
+		 // right
+		 -1.0f, 0.5f, 13.0f,  0.0f, 0.0f,	 0.0f,  -1.0f,  0.0f,	// 4
+		 -1.0f, 0.5f, 4.0f,  1.0f, 0.0f,	 0.0f,  -1.0f,  0.0f,	// 5
+		 -1.0f, -0.499f, 4.0f, 1.0f, 1.0f,	 0.0f,  -1.0f,  0.0f,	  // 6
+		 -1.0f, -0.5f, 13.0f, 0.0f, 1.0f,	 0.0f,  -1.0f,  0.0f,	// 7
+		
+		 // back
+		 -8.0f,  0.5f,  4.0f, 0.0f, 0.0f,	0.0f,  -1.0f,  0.0f,	// 8
+		 -1.0f,  0.5f,  4.0f, 1.0f, 0.0f,	0.0f,  -1.0f,  0.0f,	 // 9
+		 -1.0f, -0.499f,  4.0f, 1.0f, 1.0f,	0.0f,  -1.0f,  0.0f,		 // 10
+		 -8.0f, -0.499f,  4.0f, 0.0f, 1.0f,	0.0f,  -1.0f,  0.0f,		// 11
+		
+		 // left
+		 -8.0f, 0.5f, 13.0f,  0.0f, 0.0f,	0.0f,  -1.0f,  0.0f,	// 12
+		 -8.0f, 0.5f, 4.0f,  1.0f, 0.0f,	0.0f,  -1.0f,  0.0f,	// 13
+		 -8.0f, -0.499f, 4.0f, 1.0f, 1.0f,	0.0f,  -1.0f,  0.0f,		// 14
+		 -8.0f, -0.499f, 13.0f, 0.0f, 1.0f,	0.0f,  -1.0f,  0.0f,		// 15
+		
+		 // upper
+		 -1.0f, 0.5f,  13.0f, 0.0f, 0.0f,	0.0f,  -1.0f,  0.0f,	 // 16
+		 -8.0f, 0.5f,  13.0f, 1.0f, 0.0f,	0.0f,  -1.0f,  0.0f,	// 17
+		 -8.0f, 0.5f, 4.0f,  1.0f, 1.0f,	0.0f,  -1.0f,  0.0f,	// 18
+		 -1.0f, 0.5f, 4.0f,  0.0f, 1.0f,	0.0f,  -1.0f,  0.0f,	 // 19
 
-		// right
-		-1.0f, 0.5f, 13.0f,		0.0f, 0.0f,	 // 4
-		-1.0f, 0.5f, 4.0f,		1.0f, 0.0f,	  // 5
-		-1.0f, -0.499f, 4.0f,	1.0f, 1.0f,	  // 6
-		-1.0f, -0.5f, 13.0f,	0.0f, 1.0f,	 // 7
-
-		// back
-		-8.0f,  0.5f,  4.0f,	0.0f, 0.0f,	 // 8
-		-1.0f,  0.5f,  4.0f,	1.0f, 0.0f,	  // 9
-		-1.0f, -0.499f,  4.0f,	1.0f, 1.0f,	  // 10
-		-8.0f, -0.499f,  4.0f,	0.0f, 1.0f,	 // 11
-
-		// left
-		-8.0f, 0.5f, 13.0f,		0.0f, 0.0f,	 // 12
-		-8.0f, 0.5f, 4.0f,		1.0f, 0.0f,	  // 13
-		-8.0f, -0.499f, 4.0f,	1.0f, 1.0f,	  // 14
-		-8.0f, -0.499f, 13.0f,	0.0f, 1.0f,	 // 15
-
-		// upper
-		-1.0f, 0.5f,  13.0f,	0.0f, 0.0f,	  // 16
-		-8.0f, 0.5f,  13.0f,	1.0f, 0.0f,	 // 17
-		-8.0f, 0.5f, 4.0f,		1.0f, 1.0f,	 // 18
-		-1.0f, 0.5f, 4.0f,		0.0f, 1.0f,	  // 19
-
-		// bottom
-		-8.0f, -0.499f,  4.0f,	0.0f, 0.0f,	 // 20
-		-1.0f, -0.499f,  4.0f,	1.0f, 0.0f,	 // 21
-		-1.0f, -0.499f,  13.0f, 1.0f, 1.0f,	 // 22
-		-8.0f, -0.499f,  13.0f, 0.0f, 1.0f,	// 23
+		  // bottom
+		  -8.0f, -0.499f,  4.0f, 0.0f, 0.0f,	0.0f,  -1.0f,  0.0f,		 // 20
+		  -1.0f, -0.499f,  4.0f, 1.0f, 0.0f,	0.0f,  -1.0f,  0.0f,		 // 21
+		  -1.0f, -0.499f,  13.0f, 1.0f, 1.0f,	0.0f,  -1.0f,  0.0f,		 // 22
+		  -8.0f, -0.499f,  13.0f, 0.0f, 1.0f,	0.0f,  -1.0f,  0.0f,		// 23
 
 	};
 
@@ -470,12 +508,16 @@ void Demo::BuildColoredTempatTidur() {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// define position pointer layout 0
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(0);
 
 	// define texcoord pointer layout 1
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
+
+	// define texcoord pointer layout 2
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(2);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -491,12 +533,24 @@ void Demo::DrawColoredTempatTidur()
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
-	glUniform1i(glGetUniformLocation(this->shaderProgram, "ourTexture"), 0);
-	//GLint shininessMatLoc = glGetUniformLocation(this->shaderProgram, "material.shininess");    
-	//glUniform1f(shininessMatLoc, 1.0f);
-	glBindVertexArray(VAO); 
+	glUniform1i(glGetUniformLocation(this->shaderProgram, "material.diffuse"), 0);
 
-	glDrawElements(GL_TRIANGLES, 144, GL_UNSIGNED_INT, 0);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glUniform1i(glGetUniformLocation(this->shaderProgram, "material.specular"), 1);
+
+	GLint shininessMatLoc = glGetUniformLocation(this->shaderProgram, "material.shininess");
+	glUniform1f(shininessMatLoc, 1.0f);
+
+	glBindVertexArray(VAO);
+
+	glm::mat4 model;
+	model = glm::translate(model, glm::vec3(0, 0, 0));
+
+	GLint modelLoc = glGetUniformLocation(this->shaderProgram, "model");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+	glDrawElements(GL_TRIANGLES, 108, GL_UNSIGNED_INT, 0);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
@@ -517,46 +571,55 @@ void Demo::BuildColoredKasur() {
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	glGenTextures(1, &texture6);
+	glBindTexture(GL_TEXTURE_2D, texture6);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	image = SOIL_load_image("kasur.png", &width, &height, 0, SOIL_LOAD_RGBA);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+	SOIL_free_image_data(image);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
 	float vertices[] = {
 		//// format position, tex coords
 
 		// front
-		-8.0f, 0.51f, 13.0f,	0.0f, 0.0f,  // 0
-		-1.0f, 0.51f, 13.0f,	1.0f, 0.0f,   // 1
-		-1.0f, 1.5f,  13.0f,	1.0f, 1.0f,   // 2
-		-8.0f, 1.5f,  13.0f,	0.0f, 1.0f,  // 3
+		-8.0f, 0.51f, 13.0f,	0.0f, 0.0f, 0.0f,  1.0f,  0.0f,   // 0
+		-1.0f, 0.51f, 13.0f,	1.0f, 0.0f, 0.0f,  1.0f,  0.0f,   // 1
+		-1.0f, 1.5f,  13.0f,	1.0f, 1.0f, 0.0f,  1.0f,  0.0f,   // 2
+		-8.0f, 1.5f,  13.0f,	0.0f, 1.0f, 0.0f,  1.0f,  0.0f,  // 3
 
 		// right
-		-1.0f, 1.5f,  13.0f,	0.0f, 0.0f,  // 4
-		-1.0f, 1.5f,  4.0f,		1.0f, 0.0f,   // 5
-		-1.0f, 0.51f, 4.0f,		1.0f, 1.0f,   // 6
-		-1.0f, 0.51f, 13.0f,	0.0f, 1.0f,  // 7
+		-1.0f, 1.5f,  13.0f,	0.0f, 0.0f,  0.0f,  -1.0f,  0.0f, // 4
+		-1.0f, 1.5f,  4.0f,		1.0f, 0.0f,  0.0f,  -1.0f,  0.0f,  // 5
+		-1.0f, 0.51f, 4.0f,		1.0f, 1.0f,  0.0f,  -1.0f,  0.0f,  // 6
+		-1.0f, 0.51f, 13.0f,	0.0f, 1.0f,  0.0f,  -1.0f,  0.0f, // 7
 
 		// back
-		-8.0f,  1.5f,   4.0f,	0.0f, 0.0f,  // 8
-		-1.0f,  1.5f,   4.0f,	1.0f, 0.0f,   // 9
-		-1.0f,  0.51f,  4.0f,	1.0f, 1.0f,   // 10
-		-8.0f,  0.51f,  4.0f,	0.0f, 1.0f,  // 11
+		-8.0f,  1.5f,   4.0f,	0.0f, 0.0f, 0.0f,  -1.0f,  0.0f, // 8
+		-1.0f,  1.5f,   4.0f,	1.0f, 0.0f, 0.0f,  -1.0f,  0.0f,  // 9
+		-1.0f,  0.51f,  4.0f,	1.0f, 1.0f, 0.0f,  -1.0f,  0.0f,  // 10
+		-8.0f,  0.51f,  4.0f,	0.0f, 1.0f, 0.0f,  -1.0f,  0.0f, // 11
 
 		// left
-		-8.0f, 1.5f,	13.0f,	0.0f, 0.0f,  // 12
-		-8.0f, 1.5f,	4.0f,	1.0f, 0.0f,   // 13
-		-8.0f, 0.51f,	4.0f,	1.0f, 1.0f,   // 14
-		-8.0f, 0.51f,	13.0f,	0.0f, 1.0f,  // 15
+		-8.0f, 1.5f,	13.0f,	0.0f, 0.0f, 0.0f,  -1.0f,  0.0f, // 12
+		-8.0f, 1.5f,	4.0f,	1.0f, 0.0f, 0.0f,  -1.0f,  0.0f,  // 13
+		-8.0f, 0.51f,	4.0f,	1.0f, 1.0f, 0.0f,  -1.0f,  0.0f,  // 14
+		-8.0f, 0.51f,	13.0f,	0.0f, 1.0f, 0.0f,  -1.0f,  0.0f, // 15
 
 		// upper
-		-1.0f, 1.5f,	13.0f,	0.0f, 0.0f,   // 16
-		-8.0f, 1.5f,	13.0f,	1.0f, 0.0f,  // 17
-		-8.0f, 1.5f,	4.0f,	1.0f, 1.0f,  // 18
-		-1.0f, 1.5f,	4.0f,	0.0f, 1.0f,   // 19
+		-1.0f, 1.5f,	13.0f,	0.0f, 0.0f, 0.0f,  -1.0f,  0.0f,   // 16
+		-8.0f, 1.5f,	13.0f,	1.0f, 0.0f, 0.0f,  -1.0f,  0.0f,  // 17
+		-8.0f, 1.5f,	4.0f,	1.0f, 1.0f, 0.0f,  -1.0f,  0.0f,  // 18
+		-1.0f, 1.5f,	4.0f,	0.0f, 1.0f, 0.0f,  -1.0f,  0.0f,   // 19
 
 		// bottom
-		-8.0f, 0.51f,  4.0f,	0.0f, 0.0f, // 20
-		-1.0f, 0.51f,  4.0f,	1.0f, 0.0f,  // 21
-		-1.0f, 0.51f,  13.0f,	1.0f, 1.0f,  // 22
-		-8.0f, 0.51f,  13.0f,	0.0f, 1.0f, // 23
+		-8.0f, 0.51f,  4.0f,	0.0f, 0.0f, 0.0f,  -1.0f,  0.0f,// 20
+		-1.0f, 0.51f,  4.0f,	1.0f, 0.0f, 0.0f,  -1.0f,  0.0f, // 21
+		-1.0f, 0.51f,  13.0f,	1.0f, 1.0f, 0.0f,  -1.0f,  0.0f, // 22
+		-8.0f, 0.51f,  13.0f,	0.0f, 1.0f, 0.0f,  -1.0f,  0.0f,// 23
 	};
 
 	unsigned int indices[] = {
@@ -581,12 +644,16 @@ void Demo::BuildColoredKasur() {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// define position pointer layout 0
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(0);
 
 	// define texcoord pointer layout 1
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
+
+	// define texcoord pointer layout 2
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(2);
 
 	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -604,12 +671,29 @@ void Demo::DrawColoredKasur()
 {
 	glUseProgram(shaderProgram);
 
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, texture6);
+	//glUniform1i(glGetUniformLocation(this->shaderProgram, "ourTexture"), 0);
+
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture6);
-	glUniform1i(glGetUniformLocation(this->shaderProgram, "ourTexture"), 0);
+	glUniform1i(glGetUniformLocation(this->shaderProgram, "material.diffuse"), 0);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texture6);
+	glUniform1i(glGetUniformLocation(this->shaderProgram, "material.specular"), 1);
+
+	GLint shininessMatLoc = glGetUniformLocation(this->shaderProgram, "material.shininess");
+	glUniform1f(shininessMatLoc, 1.0f);
 
 	glBindVertexArray(VAO6); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 
+	glm::mat4 model;
+	model = glm::translate(model, glm::vec3(0, 0, 0));
+
+	GLint modelLoc = glGetUniformLocation(this->shaderProgram, "model");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+	
 	glDrawElements(GL_TRIANGLES, 108, GL_UNSIGNED_INT, 0);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -630,46 +714,55 @@ void Demo::BuildColoredSandaran() {
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	glGenTextures(1, &texture7);
+	glBindTexture(GL_TEXTURE_2D, texture7);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	image = SOIL_load_image("kayu.png", &width, &height, 0, SOIL_LOAD_RGBA);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+	SOIL_free_image_data(image);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
 	float vertices[] = {
 		//// format position, tex coords
 
 		// front
-		-8.0f, -0.499f, 14.99f,		0.0f, 0.0f,  // 0
-		-1.0f, -0.499f, 14.99f,		1.0f, 0.0f,   // 1
-		-1.0f,  4.0f,	14.99f,		1.0f, 1.0f,   // 2
-		-8.0f,	4.0f,	14.99f,		0.0f, 1.0f,  // 3
+		-8.0f, -0.499f, 14.99f,		0.0f, 0.0f, 0.0f,  -1.0f,  0.0f, // 0
+		-1.0f, -0.499f, 14.99f,		1.0f, 0.0f, 0.0f,  -1.0f,  0.0f,  // 1
+		-1.0f,  4.0f,	14.99f,		1.0f, 1.0f, 0.0f,  -1.0f,  0.0f,  // 2
+		-8.0f,	4.0f,	14.99f,		0.0f, 1.0f, 0.0f,  -1.0f,  0.0f, // 3
 
 		// right
-		-1.0f, 4.0f,	13.01f,		0.0f, 0.0f,  // 4
-		-1.0f, 4.0f,	14.99f,		1.0f, 0.0f,   // 5
-		-1.0f, -0.499f, 14.99f,		1.0f, 1.0f,   // 6
-		-1.0f, -0.499f, 13.01f,		0.0f, 1.0f,  // 7
+		-1.0f, 4.0f,	13.01f,		0.0f, 0.0f, -1.0f,  -1.0f,  0.0f, // 4
+		-1.0f, 4.0f,	14.99f,		1.0f, 0.0f, -1.0f,  -1.0f,  0.0f,  // 5
+		-1.0f, -0.499f, 14.99f,		1.0f, 1.0f, -1.0f,  -1.0f,  0.0f,  // 6
+		-1.0f, -0.499f, 13.01f,		0.0f, 1.0f, -1.0f,  -1.0f,  0.0f, // 7
 
 		// back
-		-8.0f,  4.0f,    13.01f,	0.0f, 0.0f,  // 8
-		-1.0f,  4.0f,	 13.01f,	1.0f, 0.0f,   // 9
-		-1.0f, -0.499f,  13.01f,	1.0f, 1.0f,   // 10
-		-8.0f, -0.499f,  13.01f,	0.0f, 1.0f,  // 11
+		-8.0f,  4.0f,    13.01f,	0.0f, 0.0f, 1.0f,  0.0f,  0.0f, // 8
+		-1.0f,  4.0f,	 13.01f,	1.0f, 0.0f, 1.0f,  0.0f,  0.0f,  // 9
+		-1.0f, -0.499f,  13.01f,	1.0f, 1.0f, 1.0f,  0.0f,  0.0f,  // 10
+		-8.0f, -0.499f,  13.01f,	0.0f, 1.0f, 1.0f,  0.0f,  0.0f, // 11
 
 		// left
-		-8.0f, 4.0f,	13.01f,		0.0f, 0.0f,  // 12
-		-8.0f, 4.0f,	14.99f,		1.0f, 0.0f,   // 13
-		-8.0f, -0.499f,	14.99f,		1.0f, 1.0f,   // 14
-		-8.0f, -0.499f,	13.01f,		0.0f, 1.0f,  // 15
+		-8.0f, 4.0f,	13.01f,		0.0f, 0.0f, 0.0f,  -1.0f,  0.0f, // 12
+		-8.0f, 4.0f,	14.99f,		1.0f, 0.0f, 0.0f,  -1.0f,  0.0f,  // 13
+		-8.0f, -0.499f,	14.99f,		1.0f, 1.0f, 0.0f,  -1.0f,  0.0f,  // 14
+		-8.0f, -0.499f,	13.01f,		0.0f, 1.0f, 0.0f,  -1.0f,  0.0f, // 15
 
 		// upper
-		-1.0f, 4.0f,	13.01f,		0.0f, 0.0f,   // 16
-		-8.0f, 4.0f,	13.01f,		1.0f, 0.0f,  // 17
-		-8.0f, 4.0f,	14.99f,		1.0f, 1.0f,  // 18
-		-1.0f, 4.0f,	14.99f,		0.0f, 1.0f,   // 19
+		-1.0f, 4.0f,	13.01f,		0.0f, 0.0f, 1.0f,  -1.0f,  0.0f,  // 16
+		-8.0f, 4.0f,	13.01f,		1.0f, 0.0f, 1.0f,  -1.0f,  0.0f, // 17
+		-8.0f, 4.0f,	14.99f,		1.0f, 1.0f, 1.0f,  -2.0f,  0.0f, // 18
+		-1.0f, 4.0f,	14.99f,		0.0f, 1.0f, -1.0f,  -2.0f,  0.0f,  // 19
 
 		// bottom
-		-8.0f, -0.499f,  14.99f,		0.0f, 0.0f, // 20
-		-1.0f, -0.499f,  14.99f,		1.0f, 0.0f,  // 21
-		-1.0f, -0.499f,  13.01f,		1.0f, 1.0f,  // 22
-		-8.0f, -0.499f,  13.01f,		0.0f, 1.0f, // 23
+		-8.0f, -0.499f,  14.99f,	0.0f, 0.0f, 0.0f,  -1.0f,  0.0f, // 20
+		-1.0f, -0.499f,  14.99f,	1.0f, 0.0f, 0.0f,  -1.0f,  0.0f,  // 21
+		-1.0f, -0.499f,  13.01f,	1.0f, 1.0f, 0.0f,  -1.0f,  0.0f,  // 22
+		-8.0f, -0.499f,  13.01f,	0.0f, 1.0f, 0.0f,  -1.0f,  0.0f, // 23
 	};
 
 	unsigned int indices[] = {
@@ -694,12 +787,16 @@ void Demo::BuildColoredSandaran() {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// define position pointer layout 0
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(0 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(0);
 
 	// define texcoord pointer layout 1
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
+
+	// define texcoord pointer layout 2
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(2);
 
 	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -719,10 +816,23 @@ void Demo::DrawColoredSandaran()
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture7);
-	glUniform1i(glGetUniformLocation(this->shaderProgram, "ourTexture"), 0);
+	glUniform1i(glGetUniformLocation(this->shaderProgram, "material.diffuse"), 0);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texture7);
+	glUniform1i(glGetUniformLocation(this->shaderProgram, "material.specular"), 1);
+
+	GLint shininessMatLoc = glGetUniformLocation(this->shaderProgram, "material.shininess");
+	glUniform1f(shininessMatLoc, 4.0f);
 
 	glBindVertexArray(VAO7); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 
+	glm::mat4 model;
+	model = glm::translate(model, glm::vec3(0, 0, 0));
+
+	GLint modelLoc = glGetUniformLocation(this->shaderProgram, "model");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+	
 	glDrawElements(GL_TRIANGLES, 108, GL_UNSIGNED_INT, 0);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -772,28 +882,28 @@ void Demo::BuildColoredLemari() {
 		-12.01f, -0.499f,   14.99f,		0.0f, 1.0f,	 1.0f,  0.0f,  0.0f,				// 7
 
 		// back
-		-14.99f,  8.0f,	   4.0f,	0.0f, 0.0f,	 0.0f,  0.0f,  -1.0f,				 // 8
-		-12.01f,  8.0f,	   4.0f,	1.0f, 0.0f,	 0.0f,  0.0f,  -1.0f,				  // 9
-		-12.01f, -0.499f,  4.0f,	1.0f, 1.0f,	 0.0f,  0.0f,  -1.0f,				  // 10
-		-14.99f, -0.499f,  4.0f,	0.0f, 1.0f,	 0.0f,  0.0f,  -1.0f,				 // 11
+		-14.99f,  8.0f,	   4.0f,	0.0f, 0.0f,		0.0f,  0.0f,  -1.0f,				 // 8
+		-12.01f,  8.0f,	   4.0f,	1.0f, 0.0f,		0.0f,  0.0f,  -1.0f,				  // 9
+		-12.01f, -0.499f,  4.0f,	1.0f, 1.0f,		0.0f,  0.0f,  -1.0f,				  // 10
+		-14.99f, -0.499f,  4.0f,	0.0f, 1.0f,		0.0f,  0.0f,  -1.0f,				 // 11
 
 		// left
-		-14.99f, 8.0f,		14.99f,	0.0f, 0.0f,	-1.0f,  0.0f,  0.0f,				// 12
-		-14.99f, 8.0f,		4.0f,	1.0f, 0.0f,	-1.0f,  0.0f,  0.0f,				 // 13
-		-14.99f, -0.499f,	4.0f,	1.0f, 1.0f,	-1.0f,  0.0f,  0.0f,				 // 14
-		-14.99f, -0.499f,	14.99f,	0.0f, 1.0f,	-1.0f,  0.0f,  0.0f,				// 15
+		-14.99f, 8.0f,		14.99f,	0.0f, 0.0f,		-1.0f,  0.0f,  0.0f,				// 12
+		-14.99f, 8.0f,		4.0f,	1.0f, 0.0f,		-1.0f,  0.0f,  0.0f,				 // 13
+		-14.99f, -0.499f,	4.0f,	1.0f, 1.0f,		-1.0f,  0.0f,  0.0f,				 // 14
+		-14.99f, -0.499f,	14.99f,	0.0f, 1.0f,		-1.0f,  0.0f,  0.0f,				// 15
 
 		// upper
-		-12.0f,	8.0f,		14.99f,	0.0f, 0.0f,	 0.0f,  1.0f,  0.0f, 				  // 16
-		-14.99f, 8.0f,		14.99f,	1.0f, 0.0f,	 0.0f,  1.0f,  0.0f, 				 // 17
-		-14.99f, 8.0f,		4.0f,	1.0f, 1.0f,	 0.0f,  1.0f,  0.0f, 				 // 18
-		-12.0f,	8.0f,		4.0f,	0.0f, 1.0f,	 0.0f,  1.0f,  0.0f, 				  // 19
+		-12.0f,	8.0f,		14.99f,	0.0f, 0.0f,		0.0f,  1.0f,  0.0f, 				  // 16
+		-14.99f, 8.0f,		14.99f,	1.0f, 0.0f,		0.0f,  1.0f,  0.0f, 				 // 17
+		-14.99f, 8.0f,		4.0f,	1.0f, 1.0f,		0.0f,  1.0f,  0.0f, 				 // 18
+		-12.0f,	8.0f,		4.0f,	0.0f, 1.0f,		0.0f,  1.0f,  0.0f, 				  // 19
 
 		// bottom
-		-14.99f, -0.499f,  4.0f,	0.0f, 0.0f,	 0.0f,  -1.0f,  0.0f,					// 20
-		-12.0f, -0.499f,  4.0f,	1.0f, 0.0f,		 0.0f,  -1.0f,  0.0f,					// 21
-		-12.0f, -0.499f,  14.99f,	1.0f, 1.0f,	 0.0f,  -1.0f,  0.0f,					 // 22
-		-14.99f, -0.499f,  14.99f, 0.0f, 1.0f,	 0.0f,  -1.0f,  0.0f,					// 23
+		-14.99f, -0.499f,  4.0f,	0.0f, 0.0f,		0.0f,  -1.0f,  0.0f,					// 20
+		-12.0f, -0.499f,  4.0f,	1.0f, 0.0f,			0.0f,  -1.0f,  0.0f,					// 21
+		-12.0f, -0.499f,  14.99f,	1.0f, 1.0f,		0.0f,  -1.0f,  0.0f,					 // 22
+		-14.99f, -0.499f,  14.99f, 0.0f, 1.0f,		0.0f,  -1.0f,  0.0f,					// 23
 	};
 
 	unsigned int indices[] = {
@@ -1299,7 +1409,7 @@ void Demo::BuildColoredPlane()
 	glBindTexture(GL_TEXTURE_2D, stexture2);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	image = SOIL_load_image("glantai2.png", &width, &height, 0, SOIL_LOAD_RGBA);
+	image = SOIL_load_image("lantai2.jpg", &width, &height, 0, SOIL_LOAD_RGBA);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -1312,13 +1422,6 @@ void Demo::BuildColoredPlane()
 		 15.0f, -0.5f, -15.0f,  0.0f, 0.0f, 0.0f, 1.0f,  0.0f,
 		 15.0f, -0.5f,  15.0f,	5.0f, 0.0f, 0.0f, 1.0f,  0.0f,
 		-15.0f, -0.5f,  15.0f,  0.0f, 5.0f, 0.0f, 1.0f,  0.0f,
-												 		  
-		//back
-		//-15.0, -0.5, -15.0, 0, 0, // 8 
-		// 15.0, -0.5, -15.0, 5, 0, // 9
-		// 15.0,  25.0, -15.0, 5, 5, // 10
-		//-15.0,  25.0, -15.0, 0, 5, // 11
-
 
 	};
 
