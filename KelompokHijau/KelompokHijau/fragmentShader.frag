@@ -4,10 +4,6 @@ in vec2 TexCoord;
 in vec3 Normal;
 in vec3 FragPos;
 
-
-//out vec4 FragColor;
-
-// Texture samplers
 uniform sampler2D ourTexture;
 
 struct Material {
@@ -23,8 +19,6 @@ uniform vec3 lightColor;
 
 void main()
 {
-    //FragColor = texture(ourTexture, TexCoord);
-     // ambient
     float Ka = 0.2;
     vec3 ambient = Ka * lightColor * vec3(texture(material.diffuse, TexCoord));
     // diffuse 

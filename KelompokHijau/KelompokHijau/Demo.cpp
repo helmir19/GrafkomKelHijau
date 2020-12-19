@@ -37,20 +37,18 @@ void Demo::Init() {
 }
 
 void Demo::DeInit() {
-	// optional: de-allocate all resources once they've outlived their purpose:
-	// ------------------------------------------------------------------------
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
 }
 
 void Demo::ProcessInput(GLFWwindow* window) {
+	// Fungsi Keluar Program 
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
 	}
 
-	// zoom camera
-	// -----------
+	// Fungsi Zoom Kamera
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
 		if (fovy < 90) {
 			fovy += 0.0001f;
@@ -63,8 +61,7 @@ void Demo::ProcessInput(GLFWwindow* window) {
 		}
 	}
 
-	// update camera movement 
-	// -------------
+	// Input kamera untuk bergerak ke depan, belakang, kanan, kiri 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 		MoveCamera(CAMERA_SPEED);
 	}
@@ -79,7 +76,7 @@ void Demo::ProcessInput(GLFWwindow* window) {
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 		StrafeCamera(CAMERA_SPEED);
 	}
-
+	// Input kamera untuk ke atas dan bawah
 	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
 		posCamY += 0.005f;
 		viewCamY += 0.005f;
@@ -90,31 +87,30 @@ void Demo::ProcessInput(GLFWwindow* window) {
 		viewCamY -= 0.005f;
 	}
 
-	// update camera rotation
-	// ----------------------
+	// Untuk Update Rotasi kamera
 	double mouseX, mouseY;
 	double midX = screenWidth / 2;
 	double midY = screenHeight / 2;
 	float angleY = 0.0f;
 	float angleZ = 0.0f;
 
-	// Get mouse position
+	// Untuk mendapatkan posisi kursor
 	glfwGetCursorPos(window, &mouseX, &mouseY);
 	if ((mouseX == midX) && (mouseY == midY)) {
 		return;
 	}
 
-	// Set mouse position
+	// Set posisi kursor
 	glfwSetCursorPos(window, midX, midY);
 
-	// Get the direction from the mouse cursor, set a resonable maneuvering speed
+	// Untuk mendapatkan arah cursor mouse
 	angleY = (float)((midX - mouseX)) / 1000;
 	angleZ = (float)((midY - mouseY)) / 1000;
 
-	// The higher the value is the faster the camera looks around.
+	// Percepatan kamera
 	viewCamY += angleZ * 2;
 
-	// limit the rotation around the x-axis
+	// Untuk membatasi rotasi 
 	if ((viewCamY - posCamY) > 8) {
 		viewCamY = posCamY + 8;
 	}
@@ -144,12 +140,12 @@ void Demo::Render() {
 	GLint projLoc = glGetUniformLocation(this->shaderProgram, "projection");
 	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
-	// LookAt camera (position, target/direction, up)
+	// LookAt kamera 
 	glm::mat4 view = glm::lookAt(glm::vec3(posCamX, posCamY, posCamZ), glm::vec3(viewCamX, viewCamY, viewCamZ), glm::vec3(upCamX, upCamY, upCamZ));
 	GLint viewLoc = glGetUniformLocation(this->shaderProgram, "view");
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 
-	// set lighting attributes
+	// Lighting
 	GLint lightPosLoc = glGetUniformLocation(this->shaderProgram, "lightPos");
 	glUniform3f(lightPosLoc, 0, 25, 0);
 	GLint viewPosLoc = glGetUniformLocation(this->shaderProgram, "viewPos");
@@ -181,10 +177,9 @@ void Demo::Render() {
 
 	glDisable(GL_DEPTH_TEST);
 
-	//glEnable(GL_CULL_FACE);
 }
 
-// Langit-Langit
+// Objek Langit-Langit
 
 void Demo::DrawColoredPlafon()
 {
@@ -201,7 +196,7 @@ void Demo::DrawColoredPlafon()
 	GLint shininessMatLoc = glGetUniformLocation(this->shaderProgram, "material.shininess");
 	glUniform1f(shininessMatLoc, 1.0f);
 
-	glBindVertexArray(VAOPF); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+	glBindVertexArray(VAOPF); 
 
 	glm::mat4 model;
 	GLint modelLoc = glGetUniformLocation(this->shaderProgram, "model");
@@ -214,9 +209,7 @@ void Demo::DrawColoredPlafon()
 }
 
 void Demo::BuildColoredPlafon() {
-	// load image into texture memory
-	// ------------------------------
-	// Load and create a texture 
+	
 	glGenTextures(1, &texturePF);
 	glBindTexture(GL_TEXTURE_2D, texturePF);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -236,8 +229,6 @@ void Demo::BuildColoredPlafon() {
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	// set up vertex data (and buffer(s)) and configure vertex attributes
-	// ------------------------------------------------------------------
 	float vertices[] = {
 
 		// upper
@@ -246,24 +237,15 @@ void Demo::BuildColoredPlafon() {
 		-15.0f, 25.0f, -15.0f, 1.0f, 1.0f,   0.0f,  1.0f,  0.0f,// 18
 		15.0f, 25.0f, -15.0f,	0.0f, 1.0f,  0.0f,  1.0f,  0.0f,  // 19
 
-		//15.0f, 25.0f,  15.0f,	0.0f, 0.0f,
-		//-15.0f, 25.0f,  15.0f, 1.0f, 0.0f,
-		//-15.0f, 25.0f, -15.0f, 1.0f, 1.0f,
-		//15.0f, 25.0f, -15.0f,	0.0f, 1.0f,
 	};
 
 	unsigned int indices[] = {
-		0,  1,  2,  0,  2,  3,	 // back
-		//4,  5,  6,  4,  6,  7,   // front
-		//8,  9,  10,  8,  10,  11,   // right
-		//12, 14, 13, 12, 15, 14,  // left
-		//16, 18, 17, 16, 19, 18  // upper
+		0,  1,  2,  0,  2,  3,	 // top
 	};
 
 	glGenVertexArrays(1, &VAOPF);
 	glGenBuffers(1, &VBOPF);
 	glGenBuffers(1, &EBOPF);
-	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
 	glBindVertexArray(VAOPF);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBOPF);
@@ -280,20 +262,15 @@ void Demo::BuildColoredPlafon() {
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
 
-	 //define texcoord pointer layout 1
+	 //define lighting pointer layout 2
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
-	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
 	glBindVertexArray(0);
 
-	// remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
 }
 
 /// TEMBOK
@@ -314,7 +291,7 @@ void Demo::DrawColoredTembok()
 	glUniform1f(shininessMatLoc, 1.0f);
 
 
-	glBindVertexArray(VAO3); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+	glBindVertexArray(VAO3); 
 
 	glm::mat4 model;
 	GLint modelLoc = glGetUniformLocation(this->shaderProgram, "model");
@@ -327,9 +304,7 @@ void Demo::DrawColoredTembok()
 }
 
 void Demo::BuildColoredTembok() {
-	// load image into texture memory
-	// ------------------------------
-	// Load and create a texture 
+	
 	glGenTextures(1, &texture3);
 	glBindTexture(GL_TEXTURE_2D, texture3);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -349,33 +324,31 @@ void Demo::BuildColoredTembok() {
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	// set up vertex data (and buffer(s)) and configure vertex attributes
-	// ------------------------------------------------------------------
 	float vertices[] = {
 
-		-15.0f, -0.5f, -15.0f,		0.0f, 0.0f,0.0f, 1.0f,  0.0f,
-		 15.0f, -0.5f, -15.0f,		1.0f, 0.0f,0.0f, 1.0f,  0.0f,
-		 15.0f,  25.0f, -15.0f,	1.0f, 1.0f,	   0.0f, 1.0f,  0.0f,
-		-15.0f,  25.0f, -15.0f,	0.0f, 1.0f,	   0.0f, 1.0f,  0.0f,
+		//back
+		-15.0f, -0.5f, -15.0f,		0.0f, 0.0f,    0.0f, 1.0f,  0.0f,
+		 15.0f, -0.5f, -15.0f,		1.0f, 0.0f,    0.0f, 1.0f,  0.0f,
+		 15.0f,  25.0f, -15.0f,     1.0f, 1.0f,	   0.0f, 1.0f,  0.0f,
+		-15.0f,  25.0f, -15.0f,     0.0f, 1.0f,	   0.0f, 1.0f,  0.0f,
 
 		// front
-		-15.0f, -0.5f, 15.0f,		0.0f, 0.0f,0.0f, 1.0f,  0.0f,
-		15.0f, -0.5f, 15.0f,		1.0f, 0.0f,0.0f, 1.0f,  0.0f,
-		15.0f,  25.0f, 15.0f,		1.0f, 1.0f,0.0f, 1.0f,  0.0f,
-		-15.0f,  25.0f, 15.0f,		0.0f, 1.0f,0.0f, 1.0f,  0.0f,
+		-15.0f, -0.5f, 15.0f,		0.0f, 0.0f,    0.0f, 1.0f,  0.0f,
+		15.0f, -0.5f, 15.0f,		1.0f, 0.0f,    0.0f, 1.0f,  0.0f,
+		15.0f,  25.0f, 15.0f,		1.0f, 1.0f,    0.0f, 1.0f,  0.0f,
+		-15.0f,  25.0f, 15.0f,		0.0f, 1.0f,    0.0f, 1.0f,  0.0f,
 
 		// right
-		15.0f,  25.0f,  15.0f,		0.0f, 0.0f,0.0f, 1.0f,  0.0f,
-		15.0f,  25.0f, -15.0f,		1.0f, 0.0f,0.0f, 1.0f,  0.0f,
-		15.0f, -0.5f, -15.0f,		1.0f, 1.0f,0.0f, 1.0f,  0.0f,
-		15.0f, -0.5f,  15.0f,		0.0f, 1.0f,0.0f, 1.0f,  0.0f,
+		15.0f,  25.0f,  15.0f,		0.0f, 0.0f,    0.0f, 1.0f,  0.0f,
+		15.0f,  25.0f, -15.0f,		1.0f, 0.0f,    0.0f, 1.0f,  0.0f,
+		15.0f, -0.5f, -15.0f,		1.0f, 1.0f,    0.0f, 1.0f,  0.0f,
+		15.0f, -0.5f,  15.0f,		0.0f, 1.0f,    0.0f, 1.0f,  0.0f,
 
 		// left
-		-15.0f, -0.5f, -15.0f,		0.0f, 0.0f,0.0f, 1.0f,  0.0f,
-		-15.0f, -0.5f,  15.0f,		1.0f, 0.0f,0.0f, 1.0f,  0.0f,
-		-15.0f,  25.0f,  15.0f,	1.0f, 1.0f,	   0.0f, 1.0f,  0.0f,
-		-15.0f,  25.0f, -15.0f,	0.0f, 1.0f,	   0.0f, 1.0f,  0.0f,
-
+		-15.0f, -0.5f, -15.0f,		0.0f, 0.0f,    0.0f, 1.0f,  0.0f,
+		-15.0f, -0.5f,  15.0f,		1.0f, 0.0f,    0.0f, 1.0f,  0.0f,
+		-15.0f,  25.0f,  15.0f,     1.0f, 1.0f,	   0.0f, 1.0f,  0.0f,
+		-15.0f,  25.0f, -15.0f,     0.0f, 1.0f,	   0.0f, 1.0f,  0.0f,
 
 
 	};
@@ -385,13 +358,11 @@ void Demo::BuildColoredTembok() {
 		4,  5,  6,  4,  6,  7,   // front
 		8,  9,  10,  8,  10,  11,   // right
 		12, 14, 13, 12, 15, 14,  // left
-		16, 18, 17, 16, 19, 18  // upper
 	};
 
 	glGenVertexArrays(1, &VAO3);
 	glGenBuffers(1, &VBO3);
 	glGenBuffers(1, &EBO3);
-	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
 	glBindVertexArray(VAO3);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO3);
@@ -408,19 +379,15 @@ void Demo::BuildColoredTembok() {
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
 
+	// define texcoord pointer layout 2
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
-	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
 	glBindVertexArray(0);
 
-	// remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
 }
 
 // TEMPAT TIDUR
@@ -557,10 +524,7 @@ void Demo::DrawColoredTempatTidur()
 	
 }
 
-void Demo::BuildColoredKasur() {
-	// load image into texture memory
-	// ------------------------------
-	// Load and create a texture 
+void Demo::BuildColoredKasur() { 
 	glGenTextures(1, &texture6);
 	glBindTexture(GL_TEXTURE_2D, texture6);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -580,10 +544,7 @@ void Demo::BuildColoredKasur() {
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	// set up vertex data (and buffer(s)) and configure vertex attributes
-	// ------------------------------------------------------------------
 	float vertices[] = {
-		//// format position, tex coords
 
 		// front
 		-8.0f, 0.51f, 13.0f,	0.0f, 0.0f, 0.0f,  1.0f,  0.0f,   // 0
@@ -634,7 +595,6 @@ void Demo::BuildColoredKasur() {
 	glGenVertexArrays(1, &VAO6);
 	glGenBuffers(1, &VBO6);
 	glGenBuffers(1, &EBO6);
-	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
 	glBindVertexArray(VAO6);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO6);
@@ -655,25 +615,16 @@ void Demo::BuildColoredKasur() {
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
-	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
 	glBindVertexArray(0);
 
-	// remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
 }
 
 void Demo::DrawColoredKasur()
 {
 	glUseProgram(shaderProgram);
-
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, texture6);
-	//glUniform1i(glGetUniformLocation(this->shaderProgram, "ourTexture"), 0);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture6);
@@ -686,7 +637,7 @@ void Demo::DrawColoredKasur()
 	GLint shininessMatLoc = glGetUniformLocation(this->shaderProgram, "material.shininess");
 	glUniform1f(shininessMatLoc, 1.0f);
 
-	glBindVertexArray(VAO6); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+	glBindVertexArray(VAO6); 
 
 	glm::mat4 model;
 	model = glm::translate(model, glm::vec3(0, 0, 0));
@@ -701,9 +652,7 @@ void Demo::DrawColoredKasur()
 }
 
 void Demo::BuildColoredSandaran() {
-	// load image into texture memory
-	// ------------------------------
-	// Load and create a texture 
+	
 	glGenTextures(1, &texture7);
 	glBindTexture(GL_TEXTURE_2D, texture7);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -723,10 +672,8 @@ void Demo::BuildColoredSandaran() {
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	// set up vertex data (and buffer(s)) and configure vertex attributes
-	// ------------------------------------------------------------------
+	
 	float vertices[] = {
-		//// format position, tex coords
 
 		// front
 		-8.0f, -0.499f, 14.99f,		0.0f, 0.0f, 0.0f,  -1.0f,  0.0f, // 0
@@ -777,7 +724,6 @@ void Demo::BuildColoredSandaran() {
 	glGenVertexArrays(1, &VAO7);
 	glGenBuffers(1, &VBO7);
 	glGenBuffers(1, &EBO7);
-	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
 	glBindVertexArray(VAO7);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO7);
@@ -798,16 +744,11 @@ void Demo::BuildColoredSandaran() {
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
-	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
 	glBindVertexArray(0);
 
-	// remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
 }
 
 void Demo::DrawColoredSandaran()
@@ -825,7 +766,7 @@ void Demo::DrawColoredSandaran()
 	GLint shininessMatLoc = glGetUniformLocation(this->shaderProgram, "material.shininess");
 	glUniform1f(shininessMatLoc, 4.0f);
 
-	glBindVertexArray(VAO7); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+	glBindVertexArray(VAO7); 
 
 	glm::mat4 model;
 	model = glm::translate(model, glm::vec3(0, 0, 0));
@@ -842,9 +783,7 @@ void Demo::DrawColoredSandaran()
 // LEMARI
 
 void Demo::BuildColoredLemari() {
-	// load image into texture memory
-	// ------------------------------
-	// Load and create a texture 
+	
 	glGenTextures(1, &texture4);
 	glBindTexture(GL_TEXTURE_2D, texture4);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -864,10 +803,7 @@ void Demo::BuildColoredLemari() {
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	// set up vertex data (and buffer(s)) and configure vertex attributes
-	// ------------------------------------------------------------------
 	float vertices[] = {
-		//// format position, tex coords
 
 		// front
 		-14.99f, -0.499f,	14.99f,		0.0f, 0.0f,	0.0f,  1.0f,  0.0f, 			// 0
@@ -919,7 +855,6 @@ void Demo::BuildColoredLemari() {
 	glGenVertexArrays(1, &VAO4);
 	glGenBuffers(1, &VBO4);
 	glGenBuffers(1, &EBO4);
-	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
 	glBindVertexArray(VAO4);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO4);
@@ -940,16 +875,11 @@ void Demo::BuildColoredLemari() {
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
-	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
 	glBindVertexArray(0);
 
-	// remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
 }
 
 void Demo::DrawColoredLemari() {
@@ -963,10 +893,7 @@ void Demo::DrawColoredLemari() {
 	glBindTexture(GL_TEXTURE_2D, stexture);
 	glUniform1i(glGetUniformLocation(this->shaderProgram, "material.specular"), 1);
 
-	/*GLint shininessMatLoc = glGetUniformLocation(this->shaderProgram, "material.shininess");
-	glUniform1f(shininessMatLoc, 10.0f);*/
-
-	glBindVertexArray(VAO4); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+	glBindVertexArray(VAO4); 
 
 	glm::mat4 model;
 	model = glm::translate(model, glm::vec3(0, 0, 0));
@@ -981,9 +908,7 @@ void Demo::DrawColoredLemari() {
 }
 
 void Demo::BuildColoredLemariKiri() {
-	// load image into texture memory
-	// ------------------------------
-	// Load and create a texture 
+	
 	glGenTextures(1, &texturell);
 	glBindTexture(GL_TEXTURE_2D, texturell);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -994,11 +919,7 @@ void Demo::BuildColoredLemariKiri() {
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-
-	// set up vertex data (and buffer(s)) and configure vertex attributes
-	// ------------------------------------------------------------------
 	float vertices[] = {
-		//// format position, tex coords
 
 		// LEMARI
 
@@ -1040,7 +961,6 @@ void Demo::BuildColoredLemariKiri() {
 	glGenVertexArrays(1, &VAOll);
 	glGenBuffers(1, &VBOll);
 	glGenBuffers(1, &EBOll);
-	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
 	glBindVertexArray(VAOll);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBOll);
@@ -1061,16 +981,11 @@ void Demo::BuildColoredLemariKiri() {
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
-	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
 	glBindVertexArray(0);
 
-	// remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
 }
 
 void Demo::DrawColoredLemariKiri() {
@@ -1080,7 +995,7 @@ void Demo::DrawColoredLemariKiri() {
 	glBindTexture(GL_TEXTURE_2D, texturell);
 	glUniform1i(glGetUniformLocation(this->shaderProgram, "ourTexture"), 0);
 
-	glBindVertexArray(VAOll); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+	glBindVertexArray(VAOll); 
 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
@@ -1089,9 +1004,7 @@ void Demo::DrawColoredLemariKiri() {
 }
 
 void Demo::BuildColoredLemariKanan() {
-	// load image into texture memory
-	// ------------------------------
-	// Load and create a texture 
+
 	glGenTextures(1, &texturelr);
 	glBindTexture(GL_TEXTURE_2D, texturelr);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -1102,10 +1015,7 @@ void Demo::BuildColoredLemariKanan() {
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	// set up vertex data (and buffer(s)) and configure vertex attributes
-	// ------------------------------------------------------------------
 	float vertices[] = {
-		//// format position, tex coords
 
 		// LEMARI
 
@@ -1146,7 +1056,6 @@ void Demo::BuildColoredLemariKanan() {
 	glGenVertexArrays(1, &VAOlr);
 	glGenBuffers(1, &VBOlr);
 	glGenBuffers(1, &EBOlr);
-	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
 	glBindVertexArray(VAOlr);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBOlr);
@@ -1167,16 +1076,11 @@ void Demo::BuildColoredLemariKanan() {
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
-	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
 	glBindVertexArray(0);
 
-	// remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
 }
 
 void Demo::DrawColoredLemariKanan() {
@@ -1186,7 +1090,7 @@ void Demo::DrawColoredLemariKanan() {
 	glBindTexture(GL_TEXTURE_2D, texturelr);
 	glUniform1i(glGetUniformLocation(this->shaderProgram, "ourTexture"), 0);
 
-	glBindVertexArray(VAOlr); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+	glBindVertexArray(VAOlr); 
 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
@@ -1217,8 +1121,6 @@ void Demo::BuildColoredLaci() {
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	// set up vertex data (and buffer(s)) and configure vertex attributes
-	// ------------------------------------------------------------------
 	float vertices[] = {
 
 		//front
@@ -1272,7 +1174,6 @@ void Demo::BuildColoredLaci() {
 	glGenVertexArrays(1, &VAO5);
 	glGenBuffers(1, &VBO5);
 	glGenBuffers(1, &EBO5);
-	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
 	glBindVertexArray(VAO5);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO5);
@@ -1293,14 +1194,10 @@ void Demo::BuildColoredLaci() {
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
-	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
 	glBindVertexArray(0);
 
-	// remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
@@ -1317,7 +1214,7 @@ void Demo::DrawColoredLaci() {
 	GLint shininessMatLoc = glGetUniformLocation(this->shaderProgram, "material.shininess");
 	glUniform1f(shininessMatLoc, 4.0f);
 
-	glBindVertexArray(VAO5); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+	glBindVertexArray(VAO5); 
 
 	glDrawElements(GL_TRIANGLES, 108, GL_UNSIGNED_INT, 0);
 	
@@ -1332,9 +1229,7 @@ void Demo::DrawColoredLaci() {
 }
 
 void Demo::BuildColoredPintuLaci() {
-	// load image into texture memory
-		// ------------------------------
-		// Load and create a texture 
+	
 	glGenTextures(1, &texturePL);
 	glBindTexture(GL_TEXTURE_2D, texturePL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -1354,11 +1249,8 @@ void Demo::BuildColoredPintuLaci() {
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	// set up vertex data (and buffer(s)) and configure vertex attributes
-	// ------------------------------------------------------------------
 	float vertices[] = {
-		//// format position, tex coords
-
+	
 		//front
 		-0.3f,	-0.3f,	12.99f,	0.0f, 0.0f,	0.0f,  1.0f,  0.0f,	 // 0
 		2.3f,	-0.3f,	12.99f,	1.0f, 0.0f,	0.0f,  1.0f,  0.0f,	  // 1
@@ -1388,7 +1280,6 @@ void Demo::BuildColoredPintuLaci() {
 	glGenVertexArrays(1, &VAOPL);
 	glGenBuffers(1, &VBOPL);
 	glGenBuffers(1, &EBOPL);
-	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
 	glBindVertexArray(VAOPL);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBOPL);
@@ -1409,14 +1300,10 @@ void Demo::BuildColoredPintuLaci() {
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
-	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
 	glBindVertexArray(0);
 
-	// remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
@@ -1433,7 +1320,7 @@ void Demo::DrawColoredPintuLaci() {
 	GLint shininessMatLoc = glGetUniformLocation(this->shaderProgram, "material.shininess");
 	glUniform1f(shininessMatLoc, 1.0f);
 
-	glBindVertexArray(VAOPL); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+	glBindVertexArray(VAOPL); 
 
 	glDrawElements(GL_TRIANGLES, 108, GL_UNSIGNED_INT, 0);
 
@@ -1451,7 +1338,6 @@ void Demo::DrawColoredPintuLaci() {
 
 void Demo::BuildColoredPlane()
 {
-	// Load and create a texture 
 	glGenTextures(1, &texture2);
 	glBindTexture(GL_TEXTURE_2D, texture2);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -1473,9 +1359,7 @@ void Demo::BuildColoredPlane()
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	// Build geometry
 	GLfloat vertices[] = {
-		// format position, tex coords
 		// bottom
 		-15.0f, -0.5f, -15.0f,	5.0f, 5.0f, 0.0f, 1.0f,  0.0f,
 		 15.0f, -0.5f, -15.0f,  0.0f, 0.0f, 0.0f, 1.0f,  0.0f,
@@ -1486,7 +1370,6 @@ void Demo::BuildColoredPlane()
 
 	GLuint indices[] = {
 		0,  2,  1,  0,  3,  2
-		/*4,  5,  6,  4,  6,  7*/
 	};
 
 	glGenVertexArrays(1, &VAO2);
@@ -1512,7 +1395,7 @@ void Demo::BuildColoredPlane()
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(5 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(2);
 
-	glBindVertexArray(0); // Unbind VAO
+	glBindVertexArray(0);
 }
 
 void Demo::DrawColoredPlane()
@@ -1530,7 +1413,7 @@ void Demo::DrawColoredPlane()
 	GLint shininessMatLoc = glGetUniformLocation(this->shaderProgram, "material.shininess");
 	glUniform1f(shininessMatLoc, 1.0f);
 
-	glBindVertexArray(VAO2); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+	glBindVertexArray(VAO2); 
 
 	glm::mat4 model;
 	GLint modelLoc = glGetUniformLocation(this->shaderProgram, "model");
@@ -1562,7 +1445,6 @@ void Demo::MoveCamera(float speed)
 {
 	float x = viewCamX - posCamX;
 	float z = viewCamZ - posCamZ;
-	// forward positive cameraspeed and backward negative -cameraspeed.
 	posCamX = posCamX + x * speed;
 	posCamZ = posCamZ + z * speed;
 	viewCamX = viewCamX + x * speed;
@@ -1576,7 +1458,6 @@ void Demo::StrafeCamera(float speed)
 	float orthoX = -z;
 	float orthoZ = x;
 
-	// left positive cameraspeed and right negative -cameraspeed.
 	posCamX = posCamX + orthoX * speed;
 	posCamZ = posCamZ + orthoZ * speed;
 	viewCamX = viewCamX + orthoX * speed;
@@ -1593,5 +1474,5 @@ void Demo::RotateCamera(float speed)
 
 int main(int argc, char** argv) {
 	RenderEngine& app = Demo();
-	app.Start("Camera: Free Camera Implementation", 800, 600, false, false);
+	app.Start("Proyek Akhir GRAFKOM TIF-A || Control : A = Kiri, S = Mundur, D = Kanan, W = Maju, Q = Naik, E = Turun, LMB = Zoom In, RMB = Zoom Out ", 1280, 720, false, false);
 }

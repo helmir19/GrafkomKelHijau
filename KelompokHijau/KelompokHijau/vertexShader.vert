@@ -13,9 +13,6 @@ out vec2 TexCoord;
 
 void main()
 {
-	//gl_Position = projection * view * vec4(position, 1.0f);
-
-	// We swap the y-axis by substracing our coordinates from 1. This is done because most images have the top y-axis inversed with OpenGL's top y-axis.
 	TexCoord = vec2(texCoord.x, 1.0 - texCoord.y);
 	FragPos = vec3(model * vec4(position, 1.0));
     Normal = mat3(transpose(inverse(model))) * normal; 
