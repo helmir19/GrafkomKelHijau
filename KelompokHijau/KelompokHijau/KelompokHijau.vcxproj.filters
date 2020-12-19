@@ -72,5 +72,14 @@
     <Image Include="plafon.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="grayscaleLemari2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="glantai2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="gplafon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
